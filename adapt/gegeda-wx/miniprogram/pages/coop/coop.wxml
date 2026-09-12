@@ -1,0 +1,87 @@
+<scroll-view class="page" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="hero">
+    <view class="hero-glow hero-glow--a"></view>
+    <view class="hero-glow hero-glow--b"></view>
+    <view class="hero-inner">
+      <text class="hero-kicker">COOPERATION</text>
+      <text class="hero-title">洽谈合作</text>
+      <text class="hero-sub">欢迎品牌、渠道、企业团建等合作伙伴与我们共建生态农场供应链。</text>
+      <view class="hero-action" bindtap="onCallTap" hover-class="hero-action-hover">
+        <text class="hero-action-txt">商务热线 400-888-6688</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">合作方向</text>
+      <text class="section-sub">请选择意向类型</text>
+    </view>
+    <view class="type-grid">
+      <view
+        wx:for="{{coopTypes}}"
+        wx:key="id"
+        class="type-item {{activeTypeId === item.id ? 'type-item--on' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onTypeTap"
+        hover-class="type-item-hover"
+      >
+        <text class="type-label">{{item.label}}</text>
+        <text class="type-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">提交意向</text>
+      <text class="section-sub">填写后我们将在 1-2 个工作日联系你</text>
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">公司名称</text>
+      <input class="field-input" placeholder="请输入公司名称" value="{{company}}" bindinput="onCompanyInput" />
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">联系人</text>
+      <input class="field-input" placeholder="请输入联系人姓名" value="{{contact}}" bindinput="onContactInput" />
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">联系电话</text>
+      <input
+        class="field-input"
+        type="number"
+        maxlength="11"
+        placeholder="请输入 11 位手机号"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+      />
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">职位</text>
+      <input class="field-input" placeholder="例如：采购经理、品牌总监" value="{{position}}" bindinput="onPositionInput" />
+    </view>
+
+    <view class="field-row field-row--textarea">
+      <text class="field-label">合作需求</text>
+      <textarea
+        class="field-textarea"
+        maxlength="200"
+        placeholder="请简要描述合作目标、规模和时间计划"
+        value="{{demand}}"
+        bindinput="onDemandInput"
+      />
+    </view>
+
+    <view
+      class="submit-btn {{submitted ? 'submit-btn--disabled' : ''}}"
+      bindtap="onSubmitTap"
+      hover-class="{{submitted ? '' : 'submit-btn-hover'}}"
+    >
+      {{submitted ? '已提交' : '提交合作意向'}}
+    </view>
+  </view>
+</scroll-view>

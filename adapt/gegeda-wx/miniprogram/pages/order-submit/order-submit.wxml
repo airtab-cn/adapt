@@ -1,0 +1,214 @@
+<view class="page">
+  <view class="scene-tip">请在提交订单后 30 分钟内完成支付，超时将自动取消订单。</view>
+
+  <view class="card address-card" bindtap="onAddressTap" hover-class="card-hover">
+    <view class="card-head">
+      <text class="card-title">收货地址</text>
+      <text class="card-arrow">></text>
+    </view>
+    <block wx:if="{{address}}">
+      <view class="addr-top">
+        <text class="addr-default" wx:if="{{address.isDefault}}">默认</text>
+        <text class="addr-name">{{address.name}}</text>
+        <text class="addr-phone">{{address.phone}}</text>
+      </view>
+      <text class="addr-detail">{{address.region}} {{address.detail}}</text>
+    </block>
+    <block wx:else>
+      <text class="addr-empty">请选择收货地址</text>
+    </block>
+  </view>
+
+  <view class="card goods-card" wx:if="{{draft}}">
+    <view class="card-head">
+      <text class="card-title">商品信息</text>
+      <text class="card-sub" wx:if="{{isMultiGoods}}">共 {{orderItems.length}} 种商品</text>
+    </view>
+    <view class="goods-row" wx:for="{{orderItems}}" wx:key="index">
+      <image class="goods-cover" src="{{item.img}}" mode="aspectFill" />
+      <view class="goods-main">
+        <text class="goods-title">{{item.title}}</text>
+        <text class="goods-spec">规格：{{item.skuName}}</text>
+        <text class="goods-spec" wx:if="{{item.deliveryMode}}">配送：{{item.deliveryMode}}</text>
+        <view class="goods-foot">
+          <text class="goods-price">¥{{item.price}}</text>
+          <text class="goods-qty">x{{item.quantity}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card simple-card">
+    <view class="simple-row">
+      <text class="simple-label">配送方式</text>
+      <text class="simple-value">{{deliveryModeText || '未选择'}}</text>
+    </view>
+    <view class="simple-divider"></view>
+    <view class="simple-row">
+      <text class="simple-label">支付方式</text>
+      <view class="simple-right">
+        <view class="pay-right">
+          <image class="pay-icon" src="/images/pay_wx.svg" mode="aspectFit" />
+          <view class="pay-summary"><text class="simple-value">{{paymentMethod}}</text><text class="simple-sub">可用余额 ¥{{balanceAvailable}}</text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card simple-card" bindtap="onCouponTap" hover-class="card-hover">
+    <view class="simple-row">
+      <text class="simple-label">优惠券</text>
+      <view class="simple-right">
+        <text class="simple-value" wx:if="{{selectedCoupon}}">{{couponSummary}}</text>
+        <text class="simple-value" wx:else>{{usableCouponCount > 0 ? '可用 ' + usableCouponCount + ' 张' : '暂无可用优惠券'}}</text>
+        <text class="card-arrow">></text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card simple-card" bindtap="onInvoiceTap" hover-class="card-hover">
+    <view class="simple-row">
+      <text class="simple-label">发票信息</text>
+      <view class="simple-right">
+        <text class="simple-value">{{invoiceSummary}}</text>
+        <text class="card-arrow">></text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card amount-card">
+    <view class="card-head">
+      <text class="card-title">费用明细</text>
+    </view>
+    <view class="amount-row">
+      <text class="label">商品金额</text>
+      <text class="value">¥{{goodsAmount}}</text>
+    </view>
+    <view class="amount-row">
+      <text class="label">运费</text>
+      <text class="value">¥{{freight}}</text>
+    </view>
+    <view class="amount-row">
+      <text class="label">优惠券</text>
+      <text class="value value--green">-¥{{couponAmount}}</text>
+    </view>
+    <view class="amount-row">
+      <text class="label">余额支付</text>
+      <text class="value">¥{{balanceUsed}}</text>
+    </view>
+    <view class="amount-row">
+      <text class="label">微信支付</text>
+      <text class="value">¥{{wechatPayAmount}}</text>
+    </view>
+    <view class="amount-divider"></view>
+    <view class="amount-row amount-row--total">
+      <text class="label">应付总额</text>
+      <text class="value value--strong">¥{{payableAmount}}</text>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="bottom-left">
+      <text class="total-label">实付款</text>
+      <view class="total-main">
+        <text class="total-price">¥{{payableAmount}}</text>
+        <text class="total-sub">余额 ¥{{balanceUsed}} · 微信 ¥{{wechatPayAmount}}</text>
+      </view>
+    </view>
+    <view class="submit-btn" bindtap="onSubmitTap" hover-class="submit-btn-hover">{{loading ? '支付中...' : '提交并支付'}}</view>
+  </view>
+
+  <view class="popup-mask" wx:if="{{couponPopupVisible}}" bindtap="onCouponClose"></view>
+  <view class="sheet-popup" wx:if="{{couponPopupVisible}}" catchtap="noop">
+    <view class="popup-head">
+      <text class="popup-title">选择优惠券</text>
+      <text class="popup-close" bindtap="onCouponClose">×</text>
+    </view>
+    <view class="coupon-action-row" wx:if="{{selectedCoupon}}">
+      <text class="coupon-clear" bindtap="onCouponClear">不使用优惠券</text>
+    </view>
+    <scroll-view scroll-y class="coupon-scroll">
+      <block wx:if="{{couponList.length}}">
+        <view class="coupon-card" wx:for="{{couponList}}" wx:key="id" data-id="{{item.id}}" bindtap="onCouponSelect">
+          <view class="coupon-card__left">
+            <text class="coupon-card__amount">¥{{item.amount}}</text>
+            <text class="coupon-card__type">{{item.couponTypeText}}</text>
+          </view>
+          <view class="coupon-card__main">
+            <text class="coupon-card__name">{{item.name}}</text>
+            <text class="coupon-card__desc" wx:if="{{item.couponType === 'full_reduction'}}">满{{item.thresholdAmount}}可用</text>
+            <text class="coupon-card__desc" wx:else>下单即可抵扣</text>
+            <text class="coupon-card__expire">有效期至 {{item.expireTime}}</text>
+          </view>
+          <view class="coupon-card__check {{selectedCouponId == item.id ? 'coupon-card__check--on' : ''}}">
+            {{selectedCouponId == item.id ? '已选' : '选择'}}
+          </view>
+        </view>
+      </block>
+      <view class="coupon-empty" wx:else>
+        <text class="coupon-empty__title">暂无可用优惠券</text>
+        <text class="coupon-empty__sub">满足门槛的商城优惠券会展示在这里</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="popup-mask" wx:if="{{invoicePopupVisible}}" bindtap="onInvoiceClose"></view>
+  <view class="invoice-popup" wx:if="{{invoicePopupVisible}}" catchtap="noop">
+    <view class="popup-head">
+      <text class="popup-title">发票信息</text>
+      <text class="popup-close" bindtap="onInvoiceClose">×</text>
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">发票类型</text>
+      <view class="chip-row">
+        <view class="chip chip--on">普票</view>
+        <view class="chip chip--disabled">专票</view>
+      </view>
+    </view>
+
+    <view class="form-row form-col">
+      <text class="form-label">发票抬头</text>
+      <view class="chip-row">
+        <view class="chip {{invoiceForm.titleType==='person' ? 'chip--on' : ''}}" data-type="person" bindtap="onInvoiceTitleTypeTap">个人</view>
+        <view class="chip {{invoiceForm.titleType==='company' ? 'chip--on' : ''}}" data-type="company" bindtap="onInvoiceTitleTypeTap">单位</view>
+      </view>
+    </view>
+
+    <view class="form-row" wx:if="{{invoiceForm.titleType==='person'}}">
+      <text class="form-label">姓名 *</text>
+      <input class="form-input" placeholder="请输入姓名" value="{{invoiceForm.personName}}" data-key="personName" bindinput="onInvoiceInput" />
+    </view>
+
+    <block wx:if="{{invoiceForm.titleType==='company'}}">
+      <view class="form-row">
+        <text class="form-label">单位名称 *</text>
+        <input class="form-input" placeholder="请输入单位名称" value="{{invoiceForm.companyName}}" data-key="companyName" bindinput="onInvoiceInput" />
+      </view>
+      <view class="form-row">
+        <text class="form-label">纳税人识别码 *</text>
+        <input class="form-input" placeholder="请输入纳税人识别码" value="{{invoiceForm.taxNo}}" data-key="taxNo" bindinput="onInvoiceInput" />
+      </view>
+    </block>
+
+    <view class="form-row">
+      <text class="form-label">接收邮箱 *</text>
+      <input class="form-input" placeholder="请输入接收邮箱" value="{{invoiceForm.email}}" data-key="email" bindinput="onInvoiceInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">发票内容</text>
+      <text class="form-value">商品明细</text>
+    </view>
+
+    <view class="form-row switch-row">
+      <text class="form-label">设为默认发票</text>
+      <switch checked="{{invoiceForm.setDefault}}" color="#4caf50" bindchange="onInvoiceSetDefaultChange" />
+    </view>
+
+    <view class="popup-foot">
+      <view class="popup-btn popup-btn--ghost" bindtap="onInvoiceClose">取消</view>
+      <view class="popup-btn popup-btn--ok" bindtap="onInvoiceConfirm">确定</view>
+    </view>
+  </view>
+</view>

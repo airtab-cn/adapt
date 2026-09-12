@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="hero">
+    <text class="hero-title">收货地址</text>
+    <text class="hero-sub">共 {{list.length}} / {{maxCount}} 个，最多可添加 {{maxCount}} 个</text>
+  </view>
+
+  <view class="list-wrap" wx:if="{{list.length}}">
+    <view class="addr-card" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="onSelectTap">
+      <view class="addr-top">
+        <view class="addr-user">
+          <text class="addr-name">{{item.name}}</text>
+          <text class="addr-phone">{{item.phone}}</text>
+        </view>
+        <view class="addr-default {{item.isDefault ? 'addr-default--on' : ''}}" data-id="{{item.id}}" catchtap="onSetDefaultTap">
+          <text class="addr-default-txt">{{item.isDefault ? '默认地址' : '设为默认'}}</text>
+        </view>
+      </view>
+      <text class="addr-line">{{item.region}} {{item.detail}}</text>
+      <view class="addr-actions">
+        <view class="addr-action-btn" data-id="{{item.id}}" catchtap="onEditTap" hover-class="addr-action-btn-hover">编辑</view>
+        <view class="addr-action-divider"></view>
+        <view class="addr-action-btn addr-action-btn--danger" data-id="{{item.id}}" catchtap="onDeleteTap" hover-class="addr-action-btn-hover">删除</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <text class="empty-title">暂无地址</text>
+    <text class="empty-sub">点击下方按钮添加你的第一个收货地址</text>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="add-btn" bindtap="onAddTap" hover-class="add-btn-hover">新增地址</view>
+  </view>
+</view>

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "农场预约",
+  "navigationBarBackgroundColor": "#f1f8ee",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f5f7f9",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 80
+}

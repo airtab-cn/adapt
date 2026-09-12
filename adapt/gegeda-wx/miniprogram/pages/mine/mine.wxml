@@ -1,0 +1,164 @@
+<scroll-view class="page" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="profile-card">
+    <view class="profile-card-glow" />
+    <view class="profile-row">
+      <view class="profile-avatar-wrap" bindtap="onAvatarTap">
+        <image class="profile-avatar" src="{{user.avatar}}" mode="aspectFill" />
+      </view>
+      <view class="profile-main">
+        <text wx:if="{{loggedIn}}" class="profile-greet">{{greetText}}</text>
+        <text class="profile-name">{{loggedIn ? user.nickname : (greetText + '，' + user.nickname)}}</text>
+      </view>
+      <button
+        wx:if="{{!loggedIn}}"
+        class="login-btn login-btn--side"
+        hover-class="login-btn--hover"
+        bindtap="onLoginTap"
+      >
+        {{loginButtonText}}
+      </button>
+      <view wx:if="{{loggedIn}}" class="profile-settings" catchtap="onProfileSettingsTap">
+        <image class="profile-settings-icon" src="/images/order/设置.svg" mode="aspectFit" />
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-head">
+      <text class="card-title">我的资产</text>
+      <view class="card-action" bindtap="onAssetDetailTap">
+        <text class="card-action-txt">查看明细</text>
+        <view class="chevron" />
+      </view>
+    </view>
+    <view class="asset-row">
+      <view class="asset-cell" data-type="balance" bindtap="onAssetCellTap">
+        <text class="asset-value">{{assets.balance}}</text>
+        <text class="asset-label">余额</text>
+      </view>
+      <view class="asset-divider" />
+      <view class="asset-cell" data-type="points" bindtap="onAssetCellTap">
+        <text class="asset-value">{{assets.points}}</text>
+        <text class="asset-label">积分</text>
+      </view>
+      <view class="asset-divider" />
+      <view class="asset-cell" data-type="adopt" bindtap="onAssetCellTap">
+        <text class="asset-value">{{assets.adoptCount}}</text>
+        <text class="asset-label">认养</text>
+      </view>
+      <view class="asset-divider" />
+      <view class="asset-cell" data-type="coupon" bindtap="onAssetCellTap">
+        <text class="asset-value">{{assets.couponCount}}</text>
+        <text class="asset-label">优惠券</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-head">
+      <text class="card-title">我的订单</text>
+      <view class="card-action" bindtap="onOrderAllTap">
+        <text class="card-action-txt">全部订单</text>
+        <view class="chevron" />
+      </view>
+    </view>
+    <view wx:if="{{orderEntries.length > 0}}" class="order-grid">
+      <view
+        wx:for="{{orderEntries}}"
+        wx:key="id"
+        class="order-item"
+        data-status="{{item.status}}"
+        bindtap="onOrderStatusTap"
+      >
+        <view class="order-icon-wrap">
+          <image wx:if="{{item.icon}}" class="order-icon" src="{{item.icon}}" mode="aspectFit" />
+          <view wx:else class="order-icon-done" />
+        </view>
+        <text class="order-label">{{item.label}}</text>
+        <view wx:if="{{item.badge > 0}}" class="order-badge">
+          <text class="order-badge-txt">{{item.badge > 9 ? '9+' : item.badge}}</text>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="order-empty">-</view>
+  </view>
+
+  <view class="card card--flush">
+    <block wx:for="{{serviceEntries}}" wx:key="id">
+      <view wx:if="{{item.id === 'service' && loggedIn}}" class="service-row service-row--contact">
+        <image class="service-icon" src="{{item.icon}}" mode="aspectFit" />
+        <text class="service-label">{{item.label}}</text>
+        <view class="chevron" />
+        <button
+          class="service-contact-mask"
+          open-type="contact"
+          show-message-card="{{true}}"
+          hover-class="none"
+        />
+      </view>
+      <view
+        wx:else
+        class="service-row {{item.danger ? 'service-row--danger' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onServiceTap"
+      >
+        <image class="service-icon" src="{{item.icon}}" mode="aspectFit" />
+        <text class="service-label">{{item.label}}</text>
+        <view class="chevron" />
+      </view>
+    </block>
+  </view>
+
+  <view class="farm-block">
+    <view class="farm-section-head">
+      <view class="farm-section-accent" />
+      <text class="farm-section-title">我们的农场</text>
+      <view class="farm-section-line" />
+    </view>
+    <view class="farm-card">
+      <view class="farm-cover-wrap">
+        <image class="farm-cover" src="{{farm.cover}}" mode="aspectFill" />
+        <view class="farm-cover-mask" />
+        <view class="farm-cover-inner">
+          <text class="farm-tag">{{farm.tag}}</text>
+          <text class="farm-name-overlay">{{farm.name}}</text>
+          <text class="farm-slogan">{{farm.slogan}}</text>
+        </view>
+      </view>
+      <view class="farm-body">
+        <view class="farm-info-card farm-info-card--phone" bindtap="onFarmPhoneTap">
+          <view class="farm-info-icon farm-info-icon--phone" />
+          <view class="farm-info-text">
+            <text class="farm-info-label">联系电话</text>
+            <text class="farm-info-value">{{farm.phone}}</text>
+          </view>
+          <view class="farm-nav-pill">
+            <text class="farm-nav-pill-txt">联系我们</text>
+          </view>
+        </view>
+        <view class="farm-info-card farm-info-card--wechat" bindtap="onFarmWechatTap">
+          <view class="farm-info-icon farm-info-icon--wechat" />
+          <view class="farm-info-text">
+            <text class="farm-info-label">联系微信</text>
+            <text class="farm-info-value">{{farm.wechat}}</text>
+          </view>
+          <view class="farm-nav-pill">
+            <text class="farm-nav-pill-txt">复制微信</text>
+          </view>
+        </view>
+        <view class="farm-info-card farm-info-card--addr">
+          <view class="farm-info-icon farm-info-icon--loc" />
+          <view class="farm-info-text farm-info-text--wide">
+            <text class="farm-info-label">农场地址</text>
+            <text class="farm-info-value farm-info-value--addr">{{farm.address}}</text>
+          </view>
+          <view class="farm-nav-pill" catchtap="onFarmNavigateTap">
+            <text class="farm-nav-pill-txt">导航前往</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="page-pad-bottom" />
+</scroll-view>

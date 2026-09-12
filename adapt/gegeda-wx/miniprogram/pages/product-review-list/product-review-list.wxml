@@ -1,0 +1,55 @@
+<view class="page">
+  <view class="hero">
+    <view>
+      <text class="hero-title">买家评价</text>
+      <text class="hero-sub">{{total}} 条真实评价</text>
+    </view>
+    <text class="hero-tag">按最新时间排序</text>
+  </view>
+
+  <block wx:if="{{list.length}}">
+    <view class="review-card" wx:for="{{list}}" wx:key="id" wx:for-index="reviewIndex">
+      <view class="review-head">
+        <view class="review-user-wrap">
+          <image wx:if="{{item.avatar}}" class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+          <view wx:else class="avatar avatar--placeholder">评</view>
+          <view class="review-user-meta">
+            <text class="review-user">{{item.nickname || '农场用户'}}</text>
+            <text class="review-time">{{item.createTime || '--'}}</text>
+          </view>
+        </view>
+        <text class="review-score">{{item.score}} 分</text>
+      </view>
+
+      <text class="review-content">{{item.content}}</text>
+
+      <view class="image-grid" wx:if="{{item.images && item.images.length}}">
+        <image
+          class="review-image"
+          wx:for="{{item.images}}"
+          wx:for-item="img"
+          wx:for-index="imgIndex"
+          wx:key="index"
+          src="{{img}}"
+          mode="aspectFill"
+          data-review-index="{{reviewIndex}}"
+          data-image-index="{{imgIndex}}"
+          bindtap="onPreviewImageTap"
+        />
+      </view>
+    </view>
+  </block>
+
+  <view wx:elif="{{!loading}}" class="empty-wrap">
+    <text class="empty-title">还没有更多评价</text>
+    <text class="empty-sub">后续有新的买家评价会展示在这里</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-text">评价加载中...</text>
+  </view>
+
+  <view wx:elif="{{list.length}}" class="footer-tip">
+    <text class="footer-text">{{finished ? '已经到底啦' : (loadingMore ? '正在加载更多...' : '上滑查看更多评价') }}</text>
+  </view>
+</view>

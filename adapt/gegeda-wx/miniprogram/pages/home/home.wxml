@@ -1,0 +1,337 @@
+<view class="page">
+  <view class="header">
+    <image wx:if="{{imgAd}}" class="logo" src="{{imgAd}}" mode="aspectFit" />
+    <text class="slogan">{{sloganText}}</text>
+  </view>
+
+  <view class="search-wrap">
+    <view class="search {{searchFocused ? 'search--focus' : ''}}">
+      <view class="search-icon-wrap">
+        <view class="search-icon" />
+      </view>
+      <input
+        class="search-input"
+        type="text"
+        value="{{searchKeyword}}"
+        placeholder="搜索商品、认养方案"
+        placeholder-class="search-placeholder"
+        confirm-type="search"
+        bindinput="onSearchInput"
+        bindfocus="onSearchFocus"
+        bindblur="onSearchBlur"
+        bindconfirm="onSearchConfirm"
+      />
+    </view>
+  </view>
+
+  <view class="banner-wrap" wx:if="{{slides.length}}">
+    <swiper
+      class="banner-swiper"
+      indicator-dots
+      autoplay
+      circular
+      interval="{{4500}}"
+      duration="{{500}}"
+      indicator-color="rgba(255,255,255,0.45)"
+      indicator-active-color="#4CAF50"
+    >
+      <swiper-item
+        wx:for="{{slides}}"
+        wx:key="id"
+        class="banner-item"
+        data-id="{{item.id}}"
+        bindtap="onBannerTap"
+      >
+        <image class="banner-img" src="{{item.img}}" mode="aspectFill" />
+        <view class="banner-caption" wx:if="{{item.title}}">
+          <text class="banner-title">{{item.title}}</text>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <view class="notice-card" wx:if="{{announcements.length}}">
+    <view class="notice-badge">
+      <text class="notice-badge-txt">公告</text>
+    </view>
+    <swiper
+      class="notice-swiper"
+      vertical
+      autoplay
+      circular
+      interval="{{3200}}"
+      duration="{{480}}"
+      display-multiple-items="{{1}}"
+    >
+      <swiper-item wx:for="{{announcements}}" wx:key="id">
+        <view class="notice-line" data-id="{{item.id}}" bindtap="onNoticeTap">
+          <text class="notice-text">{{item.title || item.text}}</text>
+        </view>
+      </swiper-item>
+    </swiper>
+    <view class="notice-more">
+      <view class="notice-more-icon" />
+    </view>
+  </view>
+
+  <view class="menu-dock">
+    <view class="menu-dock-deco menu-dock-deco--top" />
+    <view class="menu-dock-deco menu-dock-deco--bottom" />
+    <view class="menu-head">
+      <view class="menu-head-main">
+        <text class="menu-head-title">农场服务</text>
+        <text class="menu-head-sub">FARM SERVICE</text>
+      </view>
+      <view class="menu-head-badge {{reservationBadgeClass}}">
+        <text class="menu-head-badge-txt">{{reservationBadgeText}}</text>
+      </view>
+    </view>
+    <view class="menu-head-tip">
+      <text class="menu-head-tip-txt">常用入口</text>
+      <view class="menu-head-tip-line" />
+    </view>
+    <view class="menu-grid-4">
+      <view
+        wx:for="{{menuPrimary}}"
+        wx:key="id"
+        class="menu-cell"
+        data-id="{{item.id}}"
+        bindtap="onMenuShortcutTap"
+        hover-class="menu-cell-hover"
+      >
+        <view class="menu-cell-icon-wrap">
+          <image class="menu-cell-icon" src="{{item.icon}}" mode="aspectFit" />
+        </view>
+        <text class="menu-cell-label">{{item.label}}</text>
+      </view>
+    </view>
+    <view class="menu-head-tip menu-head-tip--sub">
+      <text class="menu-head-tip-txt">推荐服务</text>
+      <view class="menu-head-tip-line" />
+    </view>
+    <view class="menu-subrow">
+      <view
+        wx:for="{{menuSecondary}}"
+        wx:key="id"
+        class="menu-tile"
+        data-id="{{item.id}}"
+        bindtap="onMenuShortcutTap"
+        hover-class="menu-tile-hover"
+      >
+        <image class="menu-tile-cover" src="{{item.icon}}" mode="aspectFill" />
+        <view class="menu-tile-body">
+          <text class="menu-tile-title">{{item.title}}</text>
+          <text class="menu-tile-sub">{{item.sub}}</text>
+        </view>
+        <view class="menu-tile-arrow" />
+      </view>
+    </view>
+  </view>
+
+  <view class="flash-module" wx:if="{{flashItems.length}}">
+    <view class="flash-head">
+      <view class="flash-head-left">
+        <text class="flash-zh">限时秒杀</text>
+        <text class="flash-en">FLASH SALE</text>
+        <text class="flash-hint">每日0点开抢 · 当日场次</text>
+      </view>
+      <view class="flash-head-right">
+        <view class="flash-count-line">
+          <view class="flash-digits">
+            <text class="flash-dig">{{flashCountH}}</text>
+            <text class="flash-colon">:</text>
+            <text class="flash-dig">{{flashCountM}}</text>
+            <text class="flash-colon">:</text>
+            <text class="flash-dig">{{flashCountS}}</text>
+            <text class="flash-colon flash-colon--dot">.</text>
+            <text class="flash-dig">{{flashCountCs}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <scroll-view class="flash-scroll" scroll-x enable-flex>
+      <view class="flash-scroll-inner">
+        <view
+          class="flash-card"
+          wx:for="{{flashItems}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onFlashBuyTap"
+          hover-class="flash-card-hover"
+        >
+          <view class="flash-card-cover-wrap">
+            <image class="flash-card-cover" src="{{item.img}}" mode="aspectFill" />
+            <view class="flash-card-seckill">秒杀</view>
+          </view>
+          <text class="flash-card-name">{{item.name}}</text>
+          <view class="flash-card-prices">
+            <text class="flash-card-sale">¥{{item.flashPrice}}</text>
+            <text class="flash-card-origin">¥{{item.originPrice}}</text>
+          </view>
+          <view
+            class="flash-card-btn"
+            data-id="{{item.id}}"
+            bindtap="onFlashBuyTap"
+            hover-class="flash-card-btn-hover"
+          >
+            立即抢购
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="adopt-rec" wx:if="{{adoptRecItems.length}}">
+    <view class="adopt-rec-head">
+      <view class="adopt-rec-head-left">
+        <text class="adopt-rec-title">认养推荐</text>
+        <text class="adopt-rec-en">RECOMMENDED</text>
+      </view>
+      <view class="adopt-rec-more" bindtap="onAdoptRecMoreTap" hover-class="adopt-rec-more-hover">
+        <text class="adopt-rec-more-txt">更多</text>
+        <view class="adopt-rec-more-arrow" />
+      </view>
+    </view>
+    <view class="adopt-rec-grid">
+      <view
+        class="adopt-rec-card"
+        wx:for="{{adoptRecItems}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onAdoptRecBuyTap"
+        hover-class="adopt-rec-card-hover"
+      >
+        <view class="adopt-rec-cover-wrap">
+          <image class="adopt-rec-cover" src="{{item.img}}" mode="aspectFill" />
+        </view>
+        <view class="adopt-rec-body">
+          <text class="adopt-rec-name">{{item.name}}</text>
+          <view class="adopt-rec-tags">
+            <text
+              class="adopt-rec-tag"
+              wx:for="{{item.tags}}"
+              wx:for-item="tag"
+              wx:for-index="tagIdx"
+              wx:key="tagIdx"
+            >{{tag}}</text>
+          </view>
+          <text class="adopt-rec-price">{{item.price}}</text>
+          <view
+            class="adopt-rec-btn"
+            data-id="{{item.id}}"
+            catchtap="onAdoptRecBuyTap"
+            hover-class="adopt-rec-btn-hover"
+          >立即认养</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="feat-prod" wx:if="{{featProdItems.length}}">
+    <view class="feat-prod-head">
+      <view class="feat-prod-head-left">
+        <text class="feat-prod-title">特色产品</text>
+        <text class="feat-prod-en">FEATURED</text>
+      </view>
+      <view class="feat-prod-more" bindtap="onFeatProdMoreTap" hover-class="feat-prod-more-hover">
+        <text class="feat-prod-more-txt">更多</text>
+        <view class="feat-prod-more-arrow" />
+      </view>
+    </view>
+    <view class="feat-prod-grid">
+      <view
+        class="feat-prod-card"
+        wx:for="{{featProdItems}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onFeatProdBuyTap"
+        hover-class="feat-prod-card-hover"
+      >
+        <view class="feat-prod-cover-wrap">
+          <image class="feat-prod-cover" src="{{item.img}}" mode="aspectFill" />
+        </view>
+        <view class="feat-prod-body">
+          <text class="feat-prod-name">{{item.name}}</text>
+          <view class="feat-prod-tags">
+            <text
+              class="feat-prod-tag"
+              wx:for="{{item.tags}}"
+              wx:for-item="tag"
+              wx:for-index="tagIdx"
+              wx:key="tagIdx"
+            >{{tag}}</text>
+          </view>
+          <text class="feat-prod-price">{{item.price}}</text>
+          <view
+            class="feat-prod-btn"
+            data-id="{{item.id}}"
+            bindtap="onFeatProdBuyTap"
+            hover-class="feat-prod-btn-hover"
+          >立即购买</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="farm-live">
+    <view class="farm-live-head">
+      <view class="farm-live-head-left">
+        <text class="farm-live-title">农场风光</text>
+        <text class="farm-live-en">FARM LIVE</text>
+      </view>
+    </view>
+    <view class="farm-live-video-wrap" wx:if="{{farmVideoSrc}}">
+      <video
+        class="farm-live-video"
+        src="{{farmVideoSrc}}"
+        poster="{{farmVideoPoster}}"
+        controls
+        show-center-play-btn="{{true}}"
+        object-fit="cover"
+        enable-progress-gesture
+      />
+    </view>
+    <view class="farm-adopt-notice" wx:if="{{adoptNoticeText}}">
+      <view class="farm-adopt-notice-deco farm-adopt-notice-deco--tr" />
+      <view class="farm-adopt-notice-deco farm-adopt-notice-deco--bl" />
+      <view class="farm-adopt-notice-head">
+        <view class="farm-adopt-notice-head-line" />
+        <view class="farm-adopt-notice-head-mid">
+          <text class="farm-adopt-notice-title">认养公告</text>
+          <text class="farm-adopt-notice-sub">ADOPTION NOTICE</text>
+        </view>
+        <view class="farm-adopt-notice-head-line" />
+      </view>
+      <view class="farm-adopt-notice-body-wrap">
+        <text class="farm-adopt-notice-body">{{adoptNoticeText}}</text>
+      </view>
+      <view class="farm-adopt-notice-tags">
+        <view class="farm-adopt-notice-chip" wx:for="{{adoptNoticeTags}}" wx:key="id">
+          <view class="farm-adopt-notice-chip-ring">
+            <image class="farm-adopt-notice-chip-icon" src="{{item.icon}}" mode="aspectFit" />
+          </view>
+          <text class="farm-adopt-notice-chip-txt">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="notice-modal" wx:if="{{noticeVisible}}">
+    <view class="notice-modal-mask" bindtap="onNoticeClose" catchtouchmove="noop" />
+    <view class="notice-modal-panel" catchtouchmove="noop">
+      <view class="notice-modal-top">
+        <view class="notice-modal-accent" />
+        <text class="notice-modal-title">{{noticeModalTitle}}</text>
+        <view class="notice-modal-close" bindtap="onNoticeClose" hover-class="notice-modal-close-hover">
+          <text class="notice-modal-close-x">×</text>
+        </view>
+      </view>
+      <scroll-view class="notice-modal-scroll" scroll-y>
+        <text class="notice-modal-text" selectable>{{noticeModalText}}</text>
+      </scroll-view>
+      <view class="notice-modal-actions">
+        <view class="notice-modal-btn" bindtap="onNoticeClose" hover-class="notice-modal-btn-hover">我知道了</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,116 @@
+<view class="page">
+  <block wx:if="{{!notFound}}">
+  <view class="hero" wx:if="{{detail.gallery && detail.gallery.length}}">
+    <swiper class="hero-swiper" circular autoplay indicator-dots="{{false}}" current="{{swiperCurrent}}" bindchange="onHeroSwiperChange">
+      <swiper-item wx:for="{{detail.gallery}}" wx:key="index">
+        <image class="hero-cover" src="{{item}}" mode="aspectFill" />
+      </swiper-item>
+    </swiper>
+    <view class="hero-dots" wx:if="{{detail.gallery.length > 1}}">
+      <view
+        wx:for="{{detail.gallery}}"
+        wx:key="index"
+        class="hero-dot {{swiperCurrent === index ? 'hero-dot--active' : ''}}"
+      ></view>
+    </view>
+  </view>
+
+  <view class="section price-section">
+    <view class="title-row">
+      <view class="title-main">
+        <view class="badge-row">
+          <text class="detail-badge">{{detail.badge}}</text>
+          <text class="detail-stock">{{detail.stockText}}</text>
+        </view>
+        <text class="detail-title">{{detail.name}}</text>
+        <text class="detail-subtitle" wx:if="{{detail.subtitle}}">{{detail.subtitle}}</text>
+      </view>
+    </view>
+    <view class="price-line">
+      <view class="price-main">
+        <text class="price-mark">¥</text>
+        <text class="price-value">{{detail.price}}</text>
+        <text class="origin-price" wx:if="{{detail.originPrice && detail.originPrice !== detail.price}}">¥{{detail.originPrice}}</text>
+      </view>
+      <view class="price-pill">认养进行中</view>
+    </view>
+    <text class="intro">{{detail.intro}}</text>
+    <view class="tags">
+      <text class="tag" wx:for="{{detail.tagList}}" wx:key="index">{{item}}</text>
+    </view>
+    <view class="gift-panel">
+      <view class="gift-item">
+        <text class="gift-label">认养天数</text>
+        <text class="gift-value">{{detail.adoptDays}} 天</text>
+      </view>
+      <view class="gift-item">
+        <text class="gift-label">赠送{{detail.giftItemName}}</text>
+        <text class="gift-value">{{detail.giftEggCount}} {{detail.giftItemUnit}}</text>
+      </view>
+      <view class="gift-rule">
+        <text class="gift-rule-label">赠送规则</text>
+        <text class="gift-rule-text">{{detail.giftEggRule}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section" wx:if="{{detail.serviceItems && detail.serviceItems.length}}">
+    <view class="section-head">
+      <text class="section-title">服务内容</text>
+      <text class="section-sub">SERVICE</text>
+    </view>
+    <view class="bullet-row" wx:for="{{detail.serviceItems}}" wx:key="index">
+      <view class="bullet-dot"></view>
+      <text class="bullet-text">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="section" wx:if="{{detail.process && detail.process.length}}">
+    <view class="section-head">
+      <text class="section-title">认养流程</text>
+      <text class="section-sub">PROCESS</text>
+    </view>
+    <view class="process-wrap">
+      <view class="process-item" wx:for="{{detail.process}}" wx:key="index">
+        <view class="process-index">{{index + 1}}</view>
+        <text class="process-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section two-col" wx:if="{{detail.tips && detail.tips.length}}">
+    <view class="two-col-card">
+      <text class="section-title section-title--sm">温馨提示</text>
+      <view class="bullet-row" wx:for="{{detail.tips}}" wx:key="index">
+        <view class="bullet-dot"></view>
+        <text class="bullet-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+</block>
+
+  <view class="section warn" wx:if="{{notFound}}">
+    <text class="warn-text">未找到对应认养内容</text>
+  </view>
+
+  <view class="bottom-bar" wx:if="{{!notFound}}">
+    <view class="mini-btn" bindtap="onConsultTap" hover-class="mini-btn-hover">咨询</view>
+    <view class="mini-btn" bindtap="onAgreementTap" hover-class="mini-btn-hover">协议</view>
+    <view class="main-btn" bindtap="onAdoptNowTap" hover-class="main-btn-hover">立即认养</view>
+  </view>
+
+  <view class="agreement-modal" wx:if="{{agreementVisible}}">
+    <view class="agreement-mask" bindtap="onAgreementClose"></view>
+    <view class="agreement-panel">
+      <view class="agreement-head">
+        <text class="agreement-title">{{agreementTitle}}</text>
+        <view class="agreement-close" bindtap="onAgreementClose" hover-class="agreement-close-hover">×</view>
+      </view>
+      <scroll-view class="agreement-scroll" scroll-y>
+        <text class="agreement-text" selectable>{{agreementText}}</text>
+      </scroll-view>
+      <view class="agreement-btn" bindtap="onAgreementClose" hover-class="agreement-btn-hover">我知道了</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,110 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+  box-sizing: border-box;
+  background: radial-gradient(circle at 100% 0%, rgba(197, 225, 165, 0.22) 0, rgba(197, 225, 165, 0) 42%), #f4f6f2;
+}
+.hero-card {
+  padding: 24rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, #ffffff 0%, #f7fbf5 100%);
+  border: 1rpx solid #e4ede0;
+  box-shadow: 0 14rpx 30rpx rgba(66, 87, 54, 0.08);
+}
+.hero-title {
+  display: block;
+  font-size: 34rpx;
+  color: #22311d;
+  font-weight: 700;
+}
+.hero-sub {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #7d8877;
+}
+.coupon-list {
+  margin-top: 18rpx;
+}
+.coupon-card {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  margin-bottom: 16rpx;
+  padding: 22rpx;
+  border-radius: 22rpx;
+  background: #fff;
+  border: 1rpx solid #e5efe0;
+  box-shadow: 0 12rpx 26rpx rgba(66, 87, 54, 0.06);
+}
+.coupon-left {
+  width: 140rpx;
+  flex-shrink: 0;
+  text-align: center;
+  color: #2f855a;
+}
+.coupon-amount {
+  display: block;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+.coupon-type {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+}
+.coupon-main {
+  flex: 1;
+  min-width: 0;
+}
+.coupon-name {
+  display: block;
+  font-size: 28rpx;
+  color: #24311f;
+  font-weight: 700;
+}
+.coupon-desc {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #7d8877;
+}
+.coupon-action {
+  flex-shrink: 0;
+}
+.claim-btn {
+  min-width: 132rpx;
+  height: 64rpx;
+  padding: 0 20rpx;
+  border-radius: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #eefbf0 0%, #d9f4dc 100%);
+  border: 1rpx solid #97d6a0;
+  color: #2f855a;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+.claim-btn--disabled {
+  color: #96a392;
+  border-color: #dbe5d7;
+  background: #f4f7f2;
+}
+.empty {
+  margin-top: 60rpx;
+  text-align: center;
+}
+.empty-title {
+  display: block;
+  font-size: 30rpx;
+  color: #24311f;
+  font-weight: 700;
+}
+.empty-sub {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #8a9485;
+}

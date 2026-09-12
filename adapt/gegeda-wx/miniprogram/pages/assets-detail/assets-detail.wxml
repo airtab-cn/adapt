@@ -1,0 +1,198 @@
+<view class="page">
+  <view class="tab-wrap">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="id"
+      class="tab-item {{activeTab === item.id ? 'tab-item--on' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onTabTap"
+      hover-class="tab-item-hover"
+    >
+      <text class="tab-txt">{{item.label}}</text>
+    </view>
+  </view>
+
+  <view class="list-card" wx:if="{{activeTab === 'balance'}}">
+    <view class="balance-hero">
+      <text class="balance-hero__label">当前余额</text>
+      <text class="balance-hero__value">¥{{balance}}</text>
+    </view>
+
+    <view class="section-head">
+      <text class="section-title">快捷充值</text>
+    </view>
+
+    <block wx:if="{{balancePackageList.length}}">
+      <view class="recharge-grid">
+        <view
+          class="recharge-pack"
+          wx:for="{{balancePackageList}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onRechargeTap"
+        >
+          <text class="recharge-pack__actual">¥{{item.actualAmount}}</text>
+          <text class="recharge-pack__pay">支付 {{item.payAmount}}</text>
+        </view>
+      </view>
+    </block>
+    <view class="empty empty--compact" wx:else>
+      <text class="empty-title">暂无充值套餐</text>
+    </view>
+
+    <view class="section-head section-head--record">
+      <text class="section-title">充值记录</text>
+    </view>
+
+    <block wx:if="{{balanceRecordList.length}}">
+      <view
+        class="recharge-record {{item.status === 'pending' ? 'recharge-record--clickable' : ''}}"
+        wx:for="{{balanceRecordList}}"
+        wx:key="id"
+        data-no="{{item.rechargeNo}}"
+        data-status="{{item.status}}"
+        bindtap="onRechargeRecordTap"
+      >
+        <view class="recharge-record__main">
+          <text class="recharge-record__name">{{item.displayTitle || '余额充值'}}</text>
+          <text class="recharge-record__sub">充值单号：{{item.rechargeNo}}</text>
+          <view class="recharge-record__amounts">
+            <text class="recharge-record__sub">实付</text>
+            <text class="recharge-record__money">{{item.payAmount}}</text>
+            <text class="recharge-record__dot">·</text>
+            <text class="recharge-record__sub">到账</text>
+            <text class="recharge-record__money">{{item.actualAmount}}</text>
+          </view>
+          <text class="recharge-record__sub">时间：{{item.paidTime || item.createTime}}</text>
+          <text class="recharge-record__sub" wx:if="{{item.wxTransactionId}}">交易单号：{{item.wxTransactionId}}</text>
+        </view>
+        <view class="recharge-record__side">
+          <text class="recharge-record__status recharge-record__status--{{item.status}}">{{item.statusText}}</text>
+        </view>
+      </view>
+
+      <view class="record-footer" wx:if="{{balanceLoadingMore}}">
+        <text class="record-footer__txt">正在加载更多...</text>
+      </view>
+      <view class="record-footer" wx:elif="{{!balanceHasMore}}">
+        <text class="record-footer__txt">没有更多了</text>
+      </view>
+    </block>
+    <view class="empty empty--compact" wx:else>
+      <text class="empty-title">暂无充值记录</text>
+    </view>
+  </view>
+
+  <view class="list-card" wx:if="{{activeTab === 'points'}}">
+    <block wx:if="{{pointList.length}}">
+      <view class="point-card" wx:for="{{pointList}}" wx:key="id">
+        <view class="point-main">
+          <text class="point-remark">{{item.remark || '积分变动'}}</text>
+          <text class="point-sub" wx:if="{{item.orderNo}}">关联订单：{{item.orderNo}}</text>
+          <text class="point-sub">时间：{{item.createTime}}</text>
+        </view>
+        <view class="point-side">
+          <text class="point-value {{item.points >= 0 ? 'point-value--plus' : 'point-value--minus'}}">{{item.points >= 0 ? '+' : ''}}{{item.points}}</text>
+          <text class="point-balance">剩余 {{item.balanceAfter}}</text>
+        </view>
+      </view>
+    </block>
+    <view class="empty" wx:else>
+      <text class="empty-title">暂无积分记录</text>
+      <text class="empty-sub">完成订单后，积分明细会展示在这里。</text>
+    </view>
+  </view>
+
+  <view class="list-card" wx:if="{{activeTab === 'adopt'}}">
+    <view wx:if="{{adoptLoading}}" class="empty empty--compact">
+      <text class="empty-title">正在加载认养记录...</text>
+    </view>
+    <block wx:elif="{{adoptList.length}}">
+      <view class="section-head section-head--adopt">
+        <text class="section-title">我的认养</text>
+        <text class="section-sub">展示已支付且有效的认养记录</text>
+      </view>
+      <view class="adopt-card" wx:for="{{adoptList}}" wx:key="id">
+        <image class="adopt-card__cover" src="{{item.adoptAvatar || item.adopt_avatar || '/images/adopt/adapt.svg'}}" mode="aspectFill" />
+        <view class="adopt-card__main">
+          <view class="adopt-card__top">
+            <text class="adopt-card__name">{{item.adoptName || item.adopt_name || item.title || '我的认养'}}</text>
+            <text class="adopt-card__status adopt-card__status--{{item.status}}">{{item.statusText || item.status_text || '认养中'}}</text>
+          </view>
+          <text class="adopt-card__sub">订单号：{{item.orderNo || item.order_no || '--'}}</text>
+          <view class="adopt-card__meta">
+            <text class="adopt-card__pill">周期 {{item.adoptDays || item.adopt_days || 0}} 天</text>
+            <text class="adopt-card__pill">赠送 {{item.giftItemCount || item.gift_item_count || 0}}{{item.giftItemUnit || item.gift_item_unit || ''}}{{item.giftItemName || item.gift_item_name || ''}}</text>
+          </view>
+          <view class="adopt-card__foot">
+            <text class="adopt-card__time">{{item.confirmTime || item.confirm_time || item.payTime || item.pay_time || ''}}</text>
+            <text class="adopt-card__amount">￥{{item.payAmount || item.pay_amount || item.amount || '0.00'}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view class="empty" wx:else>
+      <text class="empty-title">暂无认养记录</text>
+      <text class="empty-sub">完成认养后，记录会展示在这里。</text>
+    </view>
+  </view>
+  <view class="list-card" wx:if="{{activeTab === 'coupon'}}">
+    <block wx:if="{{availableCouponList.length || historyCouponList.length}}">
+      <block wx:if="{{availableCouponList.length}}">
+        <view class="section-head">
+          <text class="section-title">可用优惠券</text>
+          <text class="section-sub">仅展示未使用且有效的优惠券</text>
+        </view>
+      </block>
+
+      <view class="coupon-card" wx:for="{{availableCouponList}}" wx:key="id">
+        <view class="coupon-left">
+          <text class="coupon-amount">¥{{item.amount}}</text>
+          <text class="coupon-type">{{item.couponTypeText}}</text>
+        </view>
+        <view class="coupon-main">
+          <text class="coupon-name">{{item.name}}</text>
+          <text class="coupon-desc" wx:if="{{item.couponType === 'full_reduction'}}">满{{item.thresholdAmount}}可用 · {{item.sceneText}}</text>
+          <text class="coupon-desc" wx:else>下单即可使用 · {{item.sceneText}}</text>
+          <text class="coupon-desc">状态：{{item.statusText}}</text>
+          <text class="coupon-desc">到期时间：{{item.expireTime}}</text>
+        </view>
+      </view>
+
+      <view class="empty empty--compact" wx:if="{{!availableCouponList.length}}">
+        <text class="empty-title">暂无可用优惠券</text>
+        <text class="empty-sub">可用的未使用优惠券会优先展示在这里。</text>
+      </view>
+
+      <view class="history-card" wx:if="{{historyCouponList.length}}">
+        <view class="history-head" bindtap="onToggleCouponHistory">
+          <view>
+            <text class="history-title">查看更多</text>
+            <text class="history-sub">查看已使用或已过期的优惠券</text>
+          </view>
+          <text class="history-arrow">{{showCouponHistory ? '收起' : '展开'}}</text>
+        </view>
+
+        <view wx:if="{{showCouponHistory}}">
+          <view class="coupon-card coupon-card--disabled" wx:for="{{historyCouponList}}" wx:key="id">
+            <view class="coupon-left coupon-left--disabled">
+              <text class="coupon-amount">¥{{item.amount}}</text>
+              <text class="coupon-type">{{item.couponTypeText}}</text>
+            </view>
+            <view class="coupon-main">
+              <text class="coupon-name coupon-name--disabled">{{item.name}}</text>
+              <text class="coupon-desc" wx:if="{{item.couponType === 'full_reduction'}}">满{{item.thresholdAmount}}可用 · {{item.sceneText}}</text>
+              <text class="coupon-desc" wx:else>下单即可使用 · {{item.sceneText}}</text>
+              <text class="coupon-desc">状态：{{item.statusText}}</text>
+              <text class="coupon-desc">{{item.status === 'used' ? '使用时间：' + (item.usedTime || '--') : '到期时间：' + (item.expireTime || '--')}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view class="empty" wx:else>
+      <text class="empty-title">暂无优惠券</text>
+      <text class="empty-sub">领取到的券会展示在这里。</text>
+    </view>
+  </view>
+</view>

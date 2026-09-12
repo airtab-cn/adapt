@@ -1,0 +1,240 @@
+<view class="page" wx:if="{{detail}}">
+  <view class="card address-card" bindtap="onAddressTap" hover-class="card-hover">
+    <view class="card-head">
+      <text class="card-title">收货地址</text>
+      <text class="card-arrow">></text>
+    </view>
+    <block wx:if="{{address}}">
+      <view class="addr-top">
+        <text class="addr-default" wx:if="{{address.isDefault}}">默认</text>
+        <text class="addr-name">{{address.name}}</text>
+        <text class="addr-phone">{{address.phone}}</text>
+      </view>
+      <text class="addr-detail">{{address.region}} {{address.detail}}</text>
+    </block>
+    <block wx:else>
+      <text class="addr-empty">请选择收货地址</text>
+    </block>
+  </view>
+
+  <view class="card goods-card">
+    <view class="card-head">
+      <text class="card-title">认养商品</text>
+    </view>
+    <view class="goods-row">
+      <image class="goods-cover" src="{{detail.cover}}" mode="aspectFill" />
+      <view class="goods-main">
+        <text class="goods-title">{{detail.title}}</text>
+        <text class="goods-subtitle">{{detail.subtitle}}</text>
+        <view class="goods-tags">
+          <text class="goods-tag">认养周期 {{detail.adoptDays}} 天</text>
+          <text class="goods-tag">{{detail.giftItemName}} {{detail.giftEggCount}}{{detail.giftItemUnit}}</text>
+        </view>
+        <view class="goods-info-line" wx:if="{{detail.giftPeriodDays > 0}}">
+          <text class="goods-info-label">赠送周期</text>
+          <text class="goods-info-value">{{detail.giftPeriodDays}} 天</text>
+        </view>
+        <text class="goods-price">¥{{detail.price}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card form-card">
+    <view class="card-head">
+      <text class="card-title">确认订单</text>
+    </view>
+    <view class="field-block">
+      <text class="field-label">认养名称 *</text>
+      <input class="field-input" value="{{adoptName}}" maxlength="20" placeholder="给它起一个温暖的名字" bindinput="onAdoptNameInput" />
+    </view>
+    <view class="field-block field-block--last">
+      <view class="field-label-row">
+        <text class="field-label">备注</text>
+        <text class="field-label-sub">选填</text>
+      </view>
+      <textarea class="field-textarea" value="{{buyerRemark}}" maxlength="100" placeholder="希望它快快长大" bindinput="onRemarkInput" />
+    </view>
+  </view>
+
+  <view class="card avatar-card" wx:if="{{adoptAvatarOptions.length}}">
+    <view class="card-head">
+      <text class="card-title">认养头像</text>
+    </view>
+    <scroll-view scroll-x class="avatar-scroll" enable-flex>
+      <view
+        wx:for="{{adoptAvatarOptions}}"
+        wx:key="id"
+        class="avatar-option {{selectedAdoptAvatar === item.image ? 'avatar-option--active' : ''}}"
+        data-image="{{item.image}}"
+        bindtap="onAdoptAvatarSelect"
+      >
+        <image class="avatar-option__img" src="{{item.image}}" mode="aspectFill" />
+        <text class="avatar-option__name">{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="card simple-card">
+    <view class="simple-row" bindtap="onCouponTap" hover-class="card-hover">
+      <text class="simple-label">优惠券</text>
+      <view class="simple-right">
+        <text class="simple-value">{{couponDisplayText}}</text>
+        <text class="card-arrow">></text>
+      </view>
+    </view>
+    <view class="simple-divider"></view>
+    <view class="simple-row">
+      <text class="simple-label">支付方式</text>
+      <view class="simple-right pay-right">
+        <image class="pay-icon" src="/images/pay_wx.svg" mode="aspectFit" />
+        <view class="pay-summary">
+          <text class="simple-value">{{paymentMethod}}</text>
+          <text class="simple-sub">可用余额 ¥{{balanceAvailable}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card simple-card" bindtap="onInvoiceTap" hover-class="card-hover">
+    <view class="simple-row">
+      <text class="simple-label">发票信息</text>
+      <view class="simple-right">
+        <text class="simple-value">{{invoiceSummary}}</text>
+        <text class="card-arrow">></text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card amount-card">
+    <view class="card-head">
+      <text class="card-title">费用明细</text>
+    </view>
+    <view class="amount-row">
+      <text class="amount-label">认养金额</text>
+      <text class="amount-value">¥{{goodsAmount}}</text>
+    </view>
+    <view class="amount-row">
+      <text class="amount-label">优惠券抵扣</text>
+      <text class="amount-value amount-value--green">-¥{{couponAmount}}</text>
+    </view>
+    <view class="amount-row">
+      <text class="amount-label">余额支付</text>
+      <text class="amount-value">¥{{balanceUsed}}</text>
+    </view>
+    <view class="amount-row">
+      <text class="amount-label">微信支付</text>
+      <text class="amount-value">¥{{wechatPayAmount}}</text>
+    </view>
+    <view class="amount-divider"></view>
+    <view class="amount-row amount-row--total">
+      <text class="amount-label">实付金额</text>
+      <text class="amount-value amount-value--strong">¥{{payableAmount}}</text>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="bottom-left">
+      <text class="bottom-title">实付金额</text>
+      <text class="bottom-price">¥{{payableAmount}}</text>
+      <text class="bottom-sub">余额 ¥{{balanceUsed}} · 微信 ¥{{wechatPayAmount}}</text>
+    </view>
+    <view class="submit-btn" bindtap="onSubmitTap" hover-class="submit-btn-hover">{{loading ? '处理中...' : '提交并支付'}}</view>
+  </view>
+
+  <view class="popup-mask" wx:if="{{couponPopupVisible}}" bindtap="onCouponClose"></view>
+  <view class="sheet-popup" wx:if="{{couponPopupVisible}}" catchtap="noop">
+    <view class="popup-head">
+      <text class="popup-title">选择优惠券</text>
+      <text class="popup-close" bindtap="onCouponClose">×</text>
+    </view>
+    <view class="coupon-action-row" wx:if="{{selectedCoupon}}">
+      <text class="coupon-clear" bindtap="onCouponClear">不使用优惠券</text>
+    </view>
+    <scroll-view scroll-y class="coupon-scroll">
+      <block wx:if="{{couponList.length}}">
+        <view class="coupon-card" wx:for="{{couponList}}" wx:key="id" data-id="{{item.id}}" bindtap="onCouponSelect">
+          <view class="coupon-card__left">
+            <text class="coupon-card__amount">¥{{item.amount}}</text>
+            <text class="coupon-card__type">{{item.couponType === 'full_reduction' ? '满减券' : '无门槛券'}}</text>
+          </view>
+          <view class="coupon-card__main">
+            <text class="coupon-card__name">{{item.name}}</text>
+            <text class="coupon-card__desc" wx:if="{{item.couponType === 'full_reduction'}}">满{{item.thresholdAmount}}可用</text>
+            <text class="coupon-card__desc" wx:else>下单即可抵扣</text>
+            <text class="coupon-card__expire">有效期至 {{item.expireTime}}</text>
+          </view>
+          <view class="coupon-card__check {{selectedCouponId == item.id ? 'coupon-card__check--on' : ''}}">{{selectedCouponId == item.id ? '已选' : '选择'}}</view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="coupon-empty">
+          <text class="coupon-empty__title">暂无可用优惠券</text>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <view class="popup-mask" wx:if="{{invoicePopupVisible}}" bindtap="onInvoiceClose"></view>
+  <view class="invoice-popup" wx:if="{{invoicePopupVisible}}" catchtap="noop">
+    <view class="popup-head">
+      <text class="popup-title">发票信息</text>
+      <text class="popup-close" bindtap="onInvoiceClose">×</text>
+    </view>
+
+    <view class="invoice-clear-row" wx:if="{{invoiceInfo}}">
+      <text class="invoice-clear" bindtap="onInvoiceClear">暂不开票</text>
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">发票类型</text>
+      <view class="chip-row">
+        <view class="chip chip--on">普票</view>
+        <view class="chip chip--disabled">专票</view>
+      </view>
+    </view>
+
+    <view class="form-row form-col">
+      <text class="form-label">发票抬头</text>
+      <view class="chip-row">
+        <view class="chip {{invoiceForm.titleType==='person' ? 'chip--on' : ''}}" data-type="person" bindtap="onInvoiceTitleTypeTap">个人</view>
+        <view class="chip {{invoiceForm.titleType==='company' ? 'chip--on' : ''}}" data-type="company" bindtap="onInvoiceTitleTypeTap">单位</view>
+      </view>
+    </view>
+
+    <view class="form-row" wx:if="{{invoiceForm.titleType==='person'}}">
+      <text class="form-label">姓名 *</text>
+      <input class="form-input" placeholder="请输入姓名" value="{{invoiceForm.personName}}" data-key="personName" bindinput="onInvoiceInput" />
+    </view>
+
+    <block wx:if="{{invoiceForm.titleType==='company'}}">
+      <view class="form-row">
+        <text class="form-label">单位名称 *</text>
+        <input class="form-input" placeholder="请输入单位名称" value="{{invoiceForm.companyName}}" data-key="companyName" bindinput="onInvoiceInput" />
+      </view>
+      <view class="form-row">
+        <text class="form-label">纳税人识别码 *</text>
+        <input class="form-input" placeholder="请输入纳税人识别码" value="{{invoiceForm.taxNo}}" data-key="taxNo" bindinput="onInvoiceInput" />
+      </view>
+    </block>
+
+    <view class="form-row">
+      <text class="form-label">接收邮箱 *</text>
+      <input class="form-input" placeholder="请输入接收邮箱" value="{{invoiceForm.email}}" data-key="email" bindinput="onInvoiceInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">发票内容</text>
+      <text class="form-value">商品明细</text>
+    </view>
+
+    <view class="form-row switch-row">
+      <text class="form-label">设为默认发票</text>
+      <switch checked="{{invoiceForm.setDefault}}" color="#7bc47f" bindchange="onInvoiceSetDefaultChange" />
+    </view>
+
+    <view class="popup-foot">
+      <view class="popup-btn popup-btn--ghost" bindtap="onInvoiceClose">取消</view>
+      <view class="popup-btn popup-btn--ok" bindtap="onInvoiceConfirm">确定</view>
+    </view>
+  </view>
+</view>

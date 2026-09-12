@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "ezplayer": "plugin://ezplayer/ezplayer"
+  },
+  "navigationBarTitleText": "认养",
+  "navigationBarBackgroundColor": "#f2f3f1",
+  "backgroundColor": "#f2f3f1"
+}

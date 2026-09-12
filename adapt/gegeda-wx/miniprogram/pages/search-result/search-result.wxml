@@ -1,0 +1,53 @@
+<view class="page">
+  <view class="search-wrap">
+    <view class="search-box">
+      <input
+        class="search-input"
+        type="text"
+        value="{{keyword}}"
+        placeholder="搜索商品关键词"
+        confirm-type="search"
+        bindinput="onKeywordInput"
+        bindconfirm="onKeywordConfirm"
+      />
+    </view>
+    <text class="result-title">{{resultTitle}}</text>
+  </view>
+
+  <scroll-view class="result-scroll" scroll-y show-scrollbar="{{false}}">
+    <view class="result-list" wx:if="{{results.length > 0}}">
+      <view
+        wx:for="{{results}}"
+        wx:key="id"
+        class="result-card"
+        data-id="{{item.id}}"
+        bindtap="onProductTap"
+        hover-class="result-card-hover"
+      >
+        <image class="result-img" src="{{item.img}}" mode="aspectFill" />
+        <view class="result-main">
+          <text class="result-name">{{item.title}}</text>
+          <view class="result-tags">
+            <text
+              wx:for="{{item.tags}}"
+              wx:for-item="tag"
+              wx:for-index="tagIdx"
+              wx:key="tagIdx"
+              class="result-tag"
+            >{{tag}}</text>
+          </view>
+          <view class="result-price-row">
+            <text class="result-price-now">¥{{item.price}}</text>
+            <text class="result-price-old">¥{{item.originPrice}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-wrap" wx:if="{{results.length === 0}}">
+      <text class="empty-title">没有找到相关商品</text>
+      <text class="empty-sub">换个关键词再试试</text>
+    </view>
+    <view class="list-pad" />
+  </scroll-view>
+</view>

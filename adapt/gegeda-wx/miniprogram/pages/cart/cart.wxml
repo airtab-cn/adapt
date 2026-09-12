@@ -1,0 +1,145 @@
+<view class="page">
+  <scroll-view
+    wx:if="{{items.length}}"
+    class="cart-scroll main-scroll"
+    scroll-y
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <view class="cart-list-inner">
+      <view class="section cart-board">
+        <view class="section-head section-head--rule">
+          <view class="section-head-left">
+            <text class="section-title">购物车</text>
+            <text class="section-kicker">核对清单，慢慢挑选喜欢的好物</text>
+          </view>
+          <view class="section-pill">
+            <text class="section-pill-txt">共 {{items.length}} 件</text>
+          </view>
+        </view>
+
+        <view wx:for="{{items}}" wx:key="id" class="swipe-wrap cart-line-wrap">
+          <view
+            class="swipe-delete"
+            data-id="{{item.id}}"
+            bindtap="onDeleteTap"
+            hover-class="swipe-delete-hover"
+          >
+            <text class="swipe-delete-txt">删除</text>
+          </view>
+          <view
+            class="swipe-inner"
+            style="transform: translate3d({{item.offsetX}}rpx, 0, 0);"
+            data-id="{{item.id}}"
+            bindtouchstart="onRowTouchStart"
+            bindtouchmove="onRowTouchMove"
+            bindtouchend="onRowTouchEnd"
+            bindtouchcancel="onRowTouchEnd"
+          >
+            <view class="cart-line">
+              <view
+                class="chk-hit"
+                data-id="{{item.id}}"
+                catchtap="onToggleItem"
+                hover-class="chk-hit-hover"
+              >
+                <view class="chk-box {{item.selected ? 'chk-box--on' : ''}}" />
+              </view>
+              <image
+                class="cart-thumb"
+                src="{{item.img}}"
+                mode="aspectFill"
+                data-product-id="{{item.productId}}"
+                catchtap="onOpenDetail"
+              />
+              <view
+                class="cart-main"
+                data-product-id="{{item.productId}}"
+                catchtap="onOpenDetail"
+              >
+                <text class="cart-title">{{item.title}}</text>
+                <text class="cart-spec">{{item.spec}}</text>
+                <view class="cart-foot">
+                  <view class="cart-price-col">
+                    <text class="cart-price-now">¥{{item.price}}</text>
+                    <text wx:if="{{item.originPrice}}" class="cart-price-old">¥{{item.originPrice}}</text>
+                  </view>
+                  <view class="cart-qty">
+                    <view
+                      class="qty-btn"
+                      data-id="{{item.id}}"
+                      data-delta="-1"
+                      catchtap="onQtyDelta"
+                      hover-class="qty-btn-hover"
+                    >-</view>
+                    <text class="qty-val">{{item.quantity}}</text>
+                    <view
+                      class="qty-btn"
+                      data-id="{{item.id}}"
+                      data-delta="1"
+                      catchtap="onQtyDelta"
+                      hover-class="qty-btn-hover"
+                    >+</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="scroll-pad" />
+  </scroll-view>
+
+  <scroll-view
+    wx:else
+    class="cart-scroll main-scroll cart-scroll--empty"
+    scroll-y
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <view class="cart-list-inner cart-list-inner--empty">
+      <view class="section cart-empty-card">
+        <view class="cart-empty-body">
+          <text class="cart-empty-lead">去商城逛逛，挑些喜欢的好物吧</text>
+          <navigator
+            url="/pages/mall/mall"
+            open-type="switchTab"
+            class="cart-empty-btn"
+            hover-class="cart-empty-btn-hover"
+          >
+            <text class="cart-empty-btn-txt">去商城</text>
+          </navigator>
+        </view>
+      </view>
+    </view>
+    <view class="scroll-pad" />
+  </scroll-view>
+
+  <view wx:if="{{items.length}}" class="cart-bar safe-bottom">
+    <view class="cart-bar-inner">
+      <view
+        class="bar-select"
+        bindtap="onToggleAll"
+        hover-class="bar-select-hover"
+      >
+        <view class="chk-box {{allSelected ? 'chk-box--on' : ''}}" />
+        <text class="bar-select-txt">全选</text>
+      </view>
+      <view class="bar-sum">
+        <text class="bar-sum-label">合计</text>
+        <view class="bar-sum-row">
+          <text class="bar-sum-num">¥{{totalPrice}}</text>
+        </view>
+      </view>
+      <view
+        class="bar-btn {{selectedCount ? '' : 'bar-btn--disabled'}}"
+        bindtap="onSettle"
+        hover-class="bar-btn-hover"
+      >
+        <text class="bar-btn-txt">结算</text>
+        <text class="bar-btn-sub">{{selectedCount}} 件</text>
+      </view>
+    </view>
+  </view>
+</view>

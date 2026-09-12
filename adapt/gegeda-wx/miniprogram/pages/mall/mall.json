@@ -1,0 +1,9 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "土货市集",
+  "navigationBarBackgroundColor": "#fafaf9",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f5f5f4",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

@@ -1,0 +1,51 @@
+<view class="page">
+  <scroll-view class="tab-strip" scroll-x enable-flex show-scrollbar="{{false}}">
+    <view class="tab-strip-inner">
+      <view
+        wx:for="{{tabs}}"
+        wx:key="id"
+        class="tab-item {{activeTab === item.id ? 'tab-item--on' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onTabTap"
+        hover-class="tab-item-hover"
+      >
+        <text class="tab-txt">{{item.label}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="list-wrap">
+    <block wx:if="{{list.length}}">
+      <view
+        class="order-card"
+        wx:for="{{list}}"
+        wx:key="id"
+        data-no="{{item.orderNo || item.no}}"
+        bindtap="onOrderTap"
+        hover-class="order-card-hover"
+      >
+        <view class="order-head">
+          <text class="order-no">订单号 {{item.orderNo || item.no}}</text>
+          <text class="order-status">{{item.statusText}}</text>
+        </view>
+        <view class="order-body">
+          <image class="order-cover" src="{{item.cover}}" mode="aspectFill" />
+          <view class="order-main">
+            <text class="order-title">{{item.title}}</text>
+            <text class="order-spec">{{item.specs || '默认规格'}}</text>
+            <view class="order-foot">
+              <text class="order-qty">x{{item.qty || item.quantity || 1}}</text>
+              <text class="order-price">¥{{item.payAmount || item.amount}}</text>
+            </view>
+          </view>
+        </view>
+        <text class="order-time">下单时间 {{item.createTime || item.time}}</text>
+      </view>
+    </block>
+
+    <view class="empty" wx:else>
+      <text class="empty-title">暂无订单</text>
+      <text class="empty-sub">当前分类下还没有订单记录</text>
+    </view>
+  </view>
+</view>

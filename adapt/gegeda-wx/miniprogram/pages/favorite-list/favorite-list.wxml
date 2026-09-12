@@ -1,0 +1,29 @@
+<view class="page">
+  <block wx:if="{{goodsList.length}}">
+    <view
+      class="card"
+      wx:for="{{goodsList}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onGoodsTap"
+      hover-class="card-hover"
+    >
+      <image class="card-cover" src="{{item.cover}}" mode="aspectFill" />
+      <view class="card-main">
+        <text class="card-title">{{item.name}}</text>
+        <text class="card-time">收藏时间：{{item.favoriteTime}}</text>
+        <view class="price-row">
+          <text class="price-now">¥{{item.price}}</text>
+          <text class="price-old">¥{{item.oldPrice}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="load-more">{{loadingText}}</view>
+  </block>
+
+  <view class="empty" wx:else>
+    <text class="empty-title">暂无收藏商品</text>
+    <text class="empty-sub">去商品详情页点击收藏后，会展示在这里</text>
+  </view>
+</view>

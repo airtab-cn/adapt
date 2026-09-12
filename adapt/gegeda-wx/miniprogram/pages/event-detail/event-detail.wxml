@@ -1,0 +1,86 @@
+<view class="page" wx:if="{{!notFound}}">
+  <image class="cover" src="{{detail.cover}}" mode="aspectFill" />
+
+  <view class="panel">
+    <view class="head">
+      <view class="tag-wrap">
+        <text class="tag" wx:for="{{detail.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="status {{detail.status === 'ongoing' ? 'status--on' : (detail.status === 'ended' ? 'status--done' : 'status--book')}}">
+        <text class="status-text">{{detail.statusText}}</text>
+      </view>
+    </view>
+    <text class="title">{{detail.name}}</text>
+    <text class="subtitle">{{i18n.activityIntro}}</text>
+    <text class="content">{{detail.description}}</text>
+    <text class="date">{{i18n.activityTimePrefix}}{{detail.eventTime}}</text>
+  </view>
+
+  <view class="panel">
+    <view class="sec-title">{{i18n.activityHighlights}}</view>
+    <view class="highlight-row">
+      <view class="dot"></view>
+      <text class="highlight-text">{{detail.highlights}}</text>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="sec-title">{{i18n.activityRules}}</view>
+    <view class="highlight-row" wx:for="{{rules}}" wx:key="*this">
+      <view class="dot"></view>
+      <text class="highlight-text">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="comment-top">
+      <text class="sec-title">{{i18n.messageBoard}}</text>
+      <text class="comment-top-sub">{{i18n.userMessage}}</text>
+    </view>
+
+    <view class="comment-form">
+      <view class="comment-input-wrap">
+        <textarea
+          class="comment-textarea"
+          value="{{commentInput}}"
+          placeholder="{{i18n.messagePlaceholder}}"
+          placeholder-class="comment-input-ph"
+          auto-height="true"
+          maxlength="300"
+          bindinput="onCommentInput"
+        />
+      </view>
+      <view class="comment-submit-btn" bindtap="onSubmitComment">{{i18n.submitMessage}}</view>
+    </view>
+
+    <scroll-view
+      class="comment-scroll"
+      scroll-y="true"
+      lower-threshold="40"
+      bindscrolltolower="onCommentReachBottom"
+    >
+      <view class="comment-list" wx:if="{{comments.length}}">
+        <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+          <image class="comment-avatar-img" src="{{item.avatar || '/images/avatar.svg'}}" mode="aspectFill" />
+          <view class="comment-main">
+            <view class="comment-head">
+              <text class="comment-name">{{item.nickname}}</text>
+              <text class="comment-time">{{item.time}}</text>
+            </view>
+            <text class="comment-content">{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="comment-empty" wx:else>{{i18n.emptyComments}}</view>
+
+      <view class="comment-loading" wx:if="{{commentsLoading}}">{{i18n.loading}}</view>
+      <view class="comment-no-more" wx:if="{{commentsFinished && comments.length > 0}}">{{commentsNoMoreText}}</view>
+    </scroll-view>
+  </view>
+</view>
+
+<view class="page" wx:else>
+  <view class="panel panel--warn">
+    <text class="warn">{{i18n.detailNotFound}}</text>
+  </view>
+</view>

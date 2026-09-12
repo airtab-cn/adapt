@@ -1,0 +1,31 @@
+<view class="page">
+  <view class="hero-card">
+    <text class="hero-title">{{sceneText}}领券中心</text>
+    <text class="hero-sub">可领取的优惠券会展示在这里，领到后可在下单时直接抵扣。</text>
+  </view>
+
+  <view class="coupon-list" wx:if="{{list.length}}">
+    <view class="coupon-card" wx:for="{{list}}" wx:key="id">
+      <view class="coupon-left">
+        <text class="coupon-amount">¥{{item.amount}}</text>
+        <text class="coupon-type">{{item.couponTypeText}}</text>
+      </view>
+      <view class="coupon-main">
+        <text class="coupon-name">{{item.name}}</text>
+        <text class="coupon-desc" wx:if="{{item.couponType === 'full_reduction'}}">满{{item.thresholdAmount}}可用 · {{item.sceneText}}</text>
+        <text class="coupon-desc" wx:else>下单即可使用 · {{item.sceneText}}</text>
+        <text class="coupon-desc">有效期 {{item.validDays}} 天</text>
+      </view>
+      <view class="coupon-action">
+        <view class="claim-btn {{item.hasClaimed ? 'claim-btn--disabled' : ''}}" data-id="{{item.id}}" bindtap="onClaimTap">
+          {{item.hasClaimed ? '已领取' : '立即领取'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <text class="empty-title">暂无可领取优惠券</text>
+    <text class="empty-sub">后续活动券和新人券会在这里展示</text>
+  </view>
+</view>

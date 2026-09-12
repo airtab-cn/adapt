@@ -1,0 +1,72 @@
+<view class="page">
+  <view class="top-panel">
+    <view class="top-kicker-row">
+      <text class="kicker">LIVE CAMERA</text>
+      <view class="online-pill"><view class="online-dot"></view><text>实时在线</text></view>
+    </view>
+    <text class="title">{{name}}</text>
+    <view class="camera-tags">
+      <text>{{cameraNo}}</text>
+      <text>{{areaNameText}}</text>
+      <text>{{protocolLabel}}</text>
+    </view>
+  </view>
+
+  <view class="player-card">
+    <view class="player-topbar">
+      <view class="player-title">
+        <view class="rec-dot"></view>
+        <text>农场实时画面</text>
+      </view>
+      <text>{{loadedAt}}</text>
+    </view>
+
+    <view class="player-stage">
+      <view wx:if="{{loading}}" class="player-state">
+        <view wx:if="{{cover}}" class="cover-backdrop">
+          <image src="{{cover}}" mode="aspectFill" />
+        </view>
+        <view class="spinner"></view>
+        <text>正在连接摄像头...</text>
+      </view>
+
+      <ezplayer
+        wx:elif="{{ready}}"
+        id="ezplayer"
+        accessToken="{{accessToken}}"
+        url="{{playUrl}}"
+        plugins="{{playerPlugins}}"
+        theme="{{playerTheme}}"
+        autoPlay="{{false}}"
+        muted="{{true}}"
+        enableScale="{{false}}"
+        ratio="16:9"
+        bind:handleError="handleError"
+        bind:onControlEvent="onControlEvent"
+        binderror="onPlayerError"
+        class="ez-player"
+      />
+
+      <view wx:else class="player-state error-state">
+        <view class="error-icon"></view>
+        <text>{{errorText}}</text>
+        <view class="retry-btn" bindtap="onRetryTap">重新连接</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="info-row">
+      <text class="info-label">摄像头编号</text>
+      <text class="info-value">{{cameraNo}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">所属区域</text>
+      <text class="info-value">{{areaNameText}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">画面状态</text>
+      <text class="info-value">{{protocolLabel}}</text>
+    </view>
+  </view>
+</view>

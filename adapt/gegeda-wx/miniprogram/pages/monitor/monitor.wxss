@@ -1,0 +1,60 @@
+.page { min-height: 100vh; padding: 26rpx 24rpx 46rpx; box-sizing: border-box; background: linear-gradient(180deg, #f8fbf4 0%, #f4f8ef 48%, #ffffff 100%); color: #24341f; }
+.hero-card { position: relative; overflow: hidden; min-height: 262rpx; padding: 30rpx; border-radius: 36rpx; background: linear-gradient(135deg, #ffffff 0%, #f2faed 100%); box-shadow: 0 24rpx 60rpx rgba(66, 103, 48, .12); border: 1rpx solid rgba(185, 218, 170, .72); }
+.hero-bg-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+.hero-bg-circle-a { right: -88rpx; top: -96rpx; width: 284rpx; height: 284rpx; background: rgba(129, 191, 96, .18); }
+.hero-bg-circle-b { right: 96rpx; bottom: -118rpx; width: 220rpx; height: 220rpx; background: rgba(236, 169, 81, .11); }
+.hero-main { position: relative; z-index: 2; max-width: 500rpx; }
+.hero-kicker-row { display: flex; align-items: center; gap: 16rpx; }
+.hero-kicker { color: #6aa94f; font-size: 21rpx; font-weight: 900; letter-spacing: 4rpx; }
+.hero-live { display: inline-flex; align-items: center; gap: 8rpx; height: 38rpx; padding: 0 16rpx; border-radius: 999rpx; background: #eef9e8; color: #4b963c; font-size: 21rpx; font-weight: 800; }
+.hero-live-dot { width: 10rpx; height: 10rpx; border-radius: 50%; background: #61d34d; box-shadow: 0 0 14rpx rgba(97, 211, 77, .7); }
+.hero-title { display: block; margin-top: 18rpx; color: #22351d; font-size: 46rpx; line-height: 1.18; font-weight: 900; letter-spacing: 1rpx; }
+.hero-sub { display: block; margin-top: 14rpx; color: #718169; font-size: 25rpx; line-height: 1.7; }
+.hero-lens { position: absolute; z-index: 2; right: 34rpx; bottom: 32rpx; width: 132rpx; height: 132rpx; border-radius: 42rpx; background: rgba(255,255,255,.72); box-shadow: inset 0 0 0 2rpx rgba(100, 172, 76, .18), 0 18rpx 42rpx rgba(73, 110, 55, .16); backdrop-filter: blur(12rpx); }
+.lens-ring { position: absolute; left: 24rpx; top: 24rpx; width: 84rpx; height: 84rpx; border-radius: 50%; background: linear-gradient(135deg, #456e39, #8fc978); }
+.lens-core { position: absolute; left: 48rpx; top: 48rpx; width: 36rpx; height: 36rpx; border-radius: 50%; background: radial-gradient(circle at 34% 30%, #ffffff 0 8rpx, #9de083 9rpx 17rpx, #2f5d28 18rpx 36rpx); box-shadow: 0 0 0 10rpx rgba(255,255,255,.5); }
+.summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14rpx; margin-top: 18rpx; }
+.summary-card { min-height: 118rpx; padding: 18rpx 16rpx; border-radius: 28rpx; box-sizing: border-box; background: rgba(255,255,255,.92); border: 1rpx solid #e6efdf; box-shadow: 0 14rpx 34rpx rgba(67, 92, 55, .07); }
+.summary-card-main { background: linear-gradient(135deg, #f2fbec, #ffffff); border-color: #cfe8c2; }
+.summary-label { display: block; color: #7a8972; font-size: 22rpx; }
+.summary-value { display: block; margin-top: 8rpx; color: #25381f; font-size: 40rpx; line-height: 1; font-weight: 900; }
+.summary-time { font-size: 34rpx; }
+.section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20rpx; margin-top: 30rpx; margin-bottom: 16rpx; }
+.section-title { display: block; color: #23351f; font-size: 32rpx; font-weight: 900; }
+.section-sub { display: block; margin-top: 6rpx; color: #84907d; font-size: 22rpx; }
+.section-pill { flex-shrink: 0; max-width: 240rpx; height: 44rpx; padding: 0 18rpx; border-radius: 999rpx; background: #ffffff; border: 1rpx solid #dcebd4; color: #519342; font-size: 22rpx; line-height: 44rpx; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.area-scroll { margin: 0 -24rpx; padding-left: 24rpx; box-sizing: border-box; white-space: nowrap; }
+.area-card { display: inline-flex; align-items: center; width: 260rpx; height: 112rpx; padding: 12rpx; margin-right: 16rpx; border-radius: 28rpx; box-sizing: border-box; background: #ffffff; border: 1rpx solid #edf2e9; box-shadow: 0 14rpx 32rpx rgba(67, 92, 55, .07); vertical-align: top; }
+.area-card-active { border-color: #95cf81; background: linear-gradient(135deg, #f5fff0, #ffffff); box-shadow: 0 18rpx 40rpx rgba(78, 145, 54, .13); }
+.area-cover { flex-shrink: 0; overflow: hidden; width: 88rpx; height: 88rpx; border-radius: 24rpx; background: #edf6e8; }
+.area-cover-img { width: 100%; height: 100%; display: block; }
+.area-cover-fallback { position: relative; width: 100%; height: 100%; background: linear-gradient(135deg, #e9f7e2, #ffffff); }
+.area-cover-fallback::before { content: ''; position: absolute; left: 22rpx; top: 28rpx; width: 44rpx; height: 30rpx; border-radius: 10rpx; border: 4rpx solid #7fbd68; box-sizing: border-box; }
+.area-cover-dot { position: absolute; left: 36rpx; top: 39rpx; width: 16rpx; height: 16rpx; border-radius: 50%; background: #67b84d; }
+.area-info { min-width: 0; padding-left: 14rpx; display: flex; flex-direction: column; }
+.area-name { color: #2b3d25; font-size: 26rpx; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.area-count { margin-top: 8rpx; color: #7e8d77; font-size: 21rpx; }
+.camera-head { margin-top: 32rpx; }
+.camera-list { display: flex; flex-direction: column; gap: 22rpx; }
+.camera-card { overflow: hidden; border-radius: 34rpx; background: #ffffff; border: 1rpx solid #e6efdf; box-shadow: 0 20rpx 48rpx rgba(61, 86, 49, .10); }
+.camera-cover-wrap { position: relative; height: 330rpx; overflow: hidden; background: #e8f0e3; }
+.camera-cover { width: 100%; height: 100%; display: block; }
+.camera-cover-shade { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: linear-gradient(180deg, rgba(21, 35, 18, .08) 0%, rgba(21, 35, 18, .05) 42%, rgba(21, 35, 18, .46) 100%); }
+.camera-status { position: absolute; left: 22rpx; top: 22rpx; display: inline-flex; align-items: center; gap: 8rpx; height: 42rpx; padding: 0 16rpx; border-radius: 999rpx; color: #ffffff; font-size: 21rpx; font-weight: 800; background: rgba(35, 54, 29, .48); backdrop-filter: blur(10rpx); }
+.camera-status.offline { background: rgba(108, 112, 104, .58); }
+.camera-status-dot { width: 11rpx; height: 11rpx; border-radius: 50%; background: #7cff61; box-shadow: 0 0 16rpx rgba(124, 255, 97, .86); }
+.camera-status.offline .camera-status-dot { background: #d7ddd2; box-shadow: none; }
+.camera-no { position: absolute; right: 22rpx; top: 22rpx; height: 42rpx; padding: 0 16rpx; border-radius: 999rpx; color: #2f5428; font-size: 22rpx; line-height: 42rpx; font-weight: 900; background: rgba(255,255,255,.84); }
+.camera-body { padding: 22rpx 24rpx 24rpx; }
+.camera-title-row { display: flex; align-items: center; justify-content: space-between; gap: 18rpx; }
+.camera-name { flex: 1; min-width: 0; color: #23351f; font-size: 32rpx; line-height: 1.35; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.camera-action { flex-shrink: 0; width: 110rpx; height: 52rpx; border-radius: 999rpx; background: #f2faed; border: 1rpx solid #cfe8c2; color: #4d943e; text-align: center; line-height: 52rpx; font-size: 23rpx; font-weight: 900; }
+.camera-meta { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 14rpx; }
+.camera-meta text { max-width: 100%; height: 42rpx; padding: 0 14rpx; border-radius: 999rpx; background: #f7faf4; color: #718168; font-size: 21rpx; line-height: 42rpx; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.camera-remark { display: block; margin-top: 14rpx; color: #8b9584; font-size: 22rpx; line-height: 1.55; }
+.state-card { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 380rpx; border-radius: 34rpx; background: #ffffff; color: #879181; font-size: 25rpx; border: 1rpx solid #e6efdf; box-shadow: 0 16rpx 36rpx rgba(70, 92, 61, .08); }
+.spinner { width: 46rpx; height: 46rpx; margin-bottom: 18rpx; border-radius: 50%; border: 5rpx solid #e1f0dc; border-top-color: #64b554; animation: spin .9s linear infinite; }
+.empty-camera { position: relative; width: 118rpx; height: 100rpx; margin-bottom: 18rpx; border-radius: 28rpx; background: linear-gradient(135deg, #edf8e8, #ffffff); box-shadow: inset 0 0 0 2rpx #dcebd4; }
+.empty-camera::before { content: ''; position: absolute; left: 27rpx; top: 29rpx; width: 64rpx; height: 42rpx; border-radius: 12rpx; border: 5rpx solid #91c77d; box-sizing: border-box; }
+.empty-lens { position: absolute; left: 51rpx; top: 42rpx; width: 16rpx; height: 16rpx; border-radius: 50%; background: #6db456; }
+@keyframes spin { to { transform: rotate(360deg); } }

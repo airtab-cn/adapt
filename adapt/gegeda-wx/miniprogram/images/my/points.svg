@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <circle cx="30" cy="30" r="28" fill="#f5f5f5" stroke="#409eff" stroke-width="2"/>
+  <text x="30" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#409eff">积分</text>
+  <path d="M20 30 L 40 30" stroke="#409eff" stroke-width="2"/>
+  <circle cx="25" cy="38" r="4" fill="#409eff"/>
+  <circle cx="35" cy="38" r="4" fill="#409eff"/>
+</svg> 

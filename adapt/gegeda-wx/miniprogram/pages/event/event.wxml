@@ -1,0 +1,52 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-glow hero-glow--a"></view>
+    <view class="hero-glow hero-glow--b"></view>
+    <view class="hero-inner">
+      <text class="hero-kicker">FARM EVENTS</text>
+      <text class="hero-title">{{bannerTitle}}</text>
+      <text class="hero-sub">{{bannerSub}}</text>
+      <view class="hero-badges">
+        <text class="hero-badge">福利活动</text>
+        <text class="hero-badge">农场探访</text>
+        <text class="hero-badge">节日专场</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head section-head--rule">
+      <view class="section-head-left">
+        <text class="section-title">热门活动</text>
+        <text class="section-kicker">持续更新 · 点击查看详情</text>
+      </view>
+    </view>
+    <view
+      wx:for="{{events}}"
+      wx:key="id"
+      class="event-card"
+      data-id="{{item.id}}"
+      bindtap="onEventTap"
+      hover-class="event-card-hover"
+    >
+      <image class="event-cover" src="{{item.cover}}" mode="aspectFill" />
+      <view wx:if="{{item.isTop}}" class="event-top-badge">置顶</view>
+      <view class="event-stamp {{item.status === 'ongoing' ? 'event-stamp--on' : (item.status === 'ended' ? 'event-stamp--done' : 'event-stamp--wait')}}">
+        {{item.statusText}}
+      </view>
+      <view class="event-body">
+        <view class="event-meta">
+          <text class="event-tag">{{item.tag}}</text>
+          <text class="event-date">{{item.date}}</text>
+        </view>
+        <text class="event-title">{{item.title}}</text>
+        <text class="event-sub">{{item.subtitle}}</text>
+        <view class="event-foot">
+          <view class="event-line"></view>
+          <text class="event-action">查看详情 ></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

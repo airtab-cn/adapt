@@ -1,0 +1,125 @@
+<view class="page">
+  <view class="mall-top">
+    <view class="mall-brand">
+      <view class="mall-brand-mark" aria-hidden="true" />
+      <view class="mall-brand-copy">
+        <text class="mall-brand-kicker">认养一只鸡 · 市集</text>
+        <text class="mall-brand-title">土货市集</text>
+        <text class="mall-brand-sub">鲜蛋禽肉，从场子里到你家餐桌</text>
+      </view>
+    </view>
+
+    <view class="search-wrap">
+      <view class="search-card {{searchFocused ? 'search-card--focus' : ''}}">
+        <view class="search-icon-wrap">
+          <view class="search-icon" />
+        </view>
+        <input
+          class="search-input"
+          type="text"
+          value="{{searchKeyword}}"
+          placeholder="搜商品，例如「土鸡蛋」"
+          placeholder-class="search-placeholder"
+          confirm-type="search"
+          bindinput="onSearchInput"
+          bindfocus="onSearchFocus"
+          bindblur="onSearchBlur"
+          bindconfirm="onSearchConfirm"
+        />
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="tag-strip" scroll-x enable-flex show-scrollbar="{{false}}">
+    <view class="tag-strip-inner">
+      <view
+        wx:for="{{filterTags}}"
+        wx:key="id"
+        class="tag-chip {{activeFilterTagId === item.id ? 'tag-chip--on' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onFilterTagTap"
+        hover-class="tag-chip-hover"
+      >
+        <text class="tag-chip-txt">{{item.label}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="mall-body">
+    <scroll-view class="cat-col" scroll-y scroll-with-animation show-scrollbar="{{false}}">
+      <view class="cat-col-pad">
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="cat-item {{activeCategoryId === item.id ? 'cat-item--active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="onCategoryTap"
+          hover-class="cat-item-hover"
+        >
+          <text class="cat-item-txt">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="prod-shell">
+      <view class="prod-shelf-head">
+        <view class="prod-shelf-left">
+          <text class="prod-shelf-name">{{activeCategoryName}}</text>
+          <view class="prod-shelf-rule" aria-hidden="true" />
+        </view>
+        <text class="prod-shelf-count">共 {{displayProducts.length}} 款</text>
+      </view>
+      <scroll-view class="prod-col" scroll-y show-scrollbar="{{false}}">
+        <view class="prod-list">
+          <view
+            wx:for="{{displayProducts}}"
+            wx:key="id"
+            class="prod-card"
+            data-id="{{item.id}}"
+            bindtap="onProductTap"
+            hover-class="prod-card-hover"
+          >
+            <view class="prod-img-frame">
+              <image class="prod-img" src="{{item.img}}" mode="aspectFill" />
+            </view>
+            <view class="prod-main">
+              <text class="prod-title">{{item.title}}</text>
+              <view class="prod-tags" wx:if="{{item.tags.length}}">
+                <text
+                  class="prod-tag"
+                  wx:for="{{item.tags}}"
+                  wx:for-item="tag"
+                  wx:for-index="tagIdx"
+                  wx:key="tagIdx"
+                >{{tag}}</text>
+              </view>
+              <view class="prod-foot">
+                <view class="prod-price-block">
+                  <view class="prod-price-line">
+                    <text class="prod-price-yen">¥</text>
+                    <text class="prod-price-now">{{item.price}}</text>
+                  </view>
+                  <text wx:if="{{item.originPrice}}" class="prod-price-old">¥{{item.originPrice}}</text>
+                </view>
+                <view
+                  class="prod-cart"
+                  data-id="{{item.id}}"
+                  catchtap="onAddCart"
+                  hover-class="prod-cart-hover"
+                >
+                  <image class="prod-cart-icon" src="/images/good/购物车.svg" mode="aspectFit" />
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="prod-empty" wx:if="{{displayProducts.length === 0}}">
+            <view class="prod-empty-dot" aria-hidden="true" />
+            <text class="prod-empty-title">这一栏暂时没有货</text>
+            <text class="prod-empty-sub">换个分类或筛选项试试</text>
+          </view>
+        </view>
+        <view class="prod-list-pad" />
+      </scroll-view>
+    </view>
+  </view>
+</view>

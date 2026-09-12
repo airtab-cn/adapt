@@ -1,0 +1,137 @@
+.page {
+  min-height: 100vh;
+  background: #f6f7f8;
+}
+
+.search-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 20rpx 24rpx 16rpx;
+  background: #ffffff;
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.06);
+}
+
+.search-box {
+  border: 1rpx solid #d8dfd3;
+  border-radius: 14rpx;
+  background: #f7faf4;
+}
+
+.search-input {
+  height: 76rpx;
+  line-height: 76rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #1f2e1a;
+}
+
+.result-title {
+  margin-top: 12rpx;
+  display: block;
+  font-size: 24rpx;
+  color: #6a7e61;
+}
+
+.result-scroll {
+  height: calc(100vh - 132rpx);
+}
+
+.result-list {
+  padding: 16rpx 20rpx 0;
+}
+
+.result-card {
+  display: flex;
+  gap: 18rpx;
+  padding: 16rpx;
+  margin-bottom: 14rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(91, 140, 72, 0.12);
+  box-sizing: border-box;
+}
+
+.result-card-hover {
+  opacity: 0.88;
+}
+
+.result-img {
+  width: 164rpx;
+  height: 164rpx;
+  border-radius: 12rpx;
+  background: #e8ece6;
+  flex-shrink: 0;
+}
+
+.result-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.result-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #24341f;
+  line-height: 1.4;
+}
+
+.result-tags {
+  margin-top: 10rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.result-tag {
+  padding: 4rpx 10rpx;
+  font-size: 20rpx;
+  color: #588245;
+  background: #eff7ea;
+  border-radius: 8rpx;
+}
+
+.result-price-row {
+  margin-top: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 10rpx;
+}
+
+.result-price-now {
+  font-size: 34rpx;
+  color: #e26a2c;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.result-price-old {
+  font-size: 22rpx;
+  color: #9ca3a0;
+  text-decoration: line-through;
+}
+
+.empty-wrap {
+  padding: 140rpx 24rpx 0;
+  text-align: center;
+}
+
+.empty-title {
+  display: block;
+  font-size: 30rpx;
+  color: #344d2e;
+  font-weight: 600;
+}
+
+.empty-sub {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 24rpx;
+  color: #8a9885;
+}
+
+.list-pad {
+  height: 30rpx;
+}

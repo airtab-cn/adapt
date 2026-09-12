@@ -1,0 +1,143 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-glow hero-glow--a"></view>
+    <view class="hero-glow hero-glow--b"></view>
+    <view class="hero-inner">
+      <text class="hero-kicker">FARM BOOKING</text>
+      <text class="hero-title">农场预约</text>
+      <text class="hero-sub">支持探访、认养咨询、活动报名，提交后由后台审核确认。</text>
+      <view class="hero-badges">
+        <text class="hero-badge">在线提交</text>
+        <text class="hero-badge">分钟级时间</text>
+        <text class="hero-badge">审核可追踪</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head section-head--rule">
+      <view class="section-head-left">
+        <text class="section-title">填写预约信息</text>
+        <text class="section-kicker">请尽量完整填写，便于我们及时联系你</text>
+      </view>
+    </view>
+
+    <view class="form">
+      <view class="form-row">
+        <text class="label">到访时间</text>
+        <view class="datetime-wrap">
+          <picker class="picker-half" mode="date" value="{{date}}" start="{{minDate}}" bindchange="onDateChange">
+            <view class="field-control">
+              <text class="field-text">{{date}}</text>
+              <text class="field-arrow">></text>
+            </view>
+          </picker>
+          <picker class="picker-half" mode="time" value="{{time}}" bindchange="onTimeChange">
+            <view class="field-control">
+              <text class="field-text">{{time}}</text>
+              <text class="field-arrow">></text>
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="form-row">
+        <text class="label">人数</text>
+        <view class="field-control field-control--input">
+          <input
+            class="input"
+            type="number"
+            placeholder="请输入人数"
+            placeholder-class="input-ph"
+            value="{{people}}"
+            bindinput="onPeopleInput"
+          />
+        </view>
+      </view>
+
+      <view class="form-row">
+        <text class="label">目的</text>
+        <picker
+          class="picker-wrap"
+          mode="selector"
+          range="{{purposeOptions}}"
+          value="{{purposeIndex}}"
+          bindchange="onPurposeChange"
+        >
+          <view class="field-control">
+            <text class="field-text">{{purposeOptions[purposeIndex]}}</text>
+            <text class="field-arrow">></text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-row">
+        <text class="label">预约人</text>
+        <view class="field-control field-control--input">
+          <input
+            class="input"
+            placeholder="请输入预约人姓名"
+            placeholder-class="input-ph"
+            value="{{name}}"
+            bindinput="onNameInput"
+          />
+        </view>
+      </view>
+
+      <view class="form-row form-row--last">
+        <text class="label">电话</text>
+        <view class="field-control field-control--input">
+          <input
+            class="input"
+            type="number"
+            maxlength="11"
+            placeholder="请输入手机号"
+            placeholder-class="input-ph"
+            value="{{phone}}"
+            bindinput="onPhoneInput"
+          />
+        </view>
+      </view>
+    </view>
+
+    <view class="submit-btn" bindtap="submitReserve" hover-class="submit-btn-hover">
+      {{submitting ? '提交中...' : '提交预约申请'}}
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head section-head--rule">
+      <view class="section-head-left">
+        <text class="section-title">预约记录</text>
+        <text class="section-kicker">当前 {{total}} 条，姓名和电话已脱敏</text>
+      </view>
+    </view>
+
+    <block wx:if="{{records.length}}">
+      <view class="record-card" wx:for="{{records}}" wx:key="id">
+        <view
+          class="record-stamp {{item.status === 'approved' ? 'record-stamp--approved' : (item.status === 'rejected' ? 'record-stamp--rejected' : 'record-stamp--pending')}}"
+        >
+          {{item.status === 'approved' ? '已通过' : (item.status === 'rejected' ? '已驳回' : '待审核')}}
+        </view>
+        <view class="record-top">
+          <text class="record-purpose">{{item.purpose}}</text>
+          <text class="record-datetime">{{item.date}} {{item.time}}</text>
+        </view>
+        <view class="record-body">
+          <text class="record-text">预约人：{{item.maskedName}}</text>
+          <text class="record-text">电话：{{item.maskedPhone}}</text>
+          <text class="record-text">人数：{{item.people}}人</text>
+        </view>
+      </view>
+
+      <view class="load-more" wx:if="{{loadingMore}}">加载中...</view>
+      <view class="load-more" wx:elif="{{!hasMore}}">没有更多记录了</view>
+    </block>
+
+    <view class="empty" wx:else>
+      <text class="empty-title">暂无预约记录</text>
+      <text class="empty-sub">填写上方表单并提交后，将在这里展示</text>
+    </view>
+  </view>
+</view>

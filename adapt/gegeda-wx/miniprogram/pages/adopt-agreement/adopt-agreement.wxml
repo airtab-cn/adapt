@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-corner corner-left"></view>
+    <view class="hero-corner corner-right"></view>
+    <view class="hero-badge">Farm Policy</view>
+    <text class="hero-title">{{title}}</text>
+    <text class="hero-sub">{{subTitle}}</text>
+    <view class="hero-meta">
+      <text class="hero-meta-item">{{heroMetaLeft}}</text>
+      <text class="hero-meta-dot">{{heroMetaSeparator}}</text>
+      <text class="hero-meta-item">{{heroMetaRight}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-corner corner-top-left"></view>
+    <view class="card-corner corner-top-right"></view>
+    <view class="head">
+      <view class="dot"></view>
+      <text class="head-title">{{headTitle}}</text>
+      <view class="head-line"></view>
+    </view>
+
+    <scroll-view class="content-scroll" scroll-y>
+      <view wx:if="{{loading}}" class="loading-wrap">
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line short"></view>
+      </view>
+      <view wx:elif="{{markdownHtml}}">
+        <rich-text class="content rich-content" nodes="{{markdownHtml}}"></rich-text>
+      </view>
+      <view wx:else class="empty-wrap">
+        <text class="empty-text">{{loadError ? content : emptyText}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="bottom-bar">
+    <text class="footer-hint">{{footerHint}}</text>
+    <view
+      class="ack-btn {{agreed ? 'ack-btn-disabled' : ''}}"
+      bindtap="onAcknowledgeTap"
+      hover-class="{{agreed ? '' : 'ack-btn-hover'}}"
+    >
+      {{ackText}}
+    </view>
+  </view>
+</view>

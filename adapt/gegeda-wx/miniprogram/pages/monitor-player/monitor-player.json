@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "实时监控",
+  "backgroundColor": "#f8fbf4",
+  "usingComponents": {
+    "ezplayer": "plugin://ezplayer/ezplayer"
+  }
+}

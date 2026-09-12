@@ -1,0 +1,505 @@
+<view class="page">
+  <block wx:if="{{order}}">
+    <view class="hero hero--{{order.status}}">
+      <view class="hero-main">
+        <text class="hero-status">{{order.statusText}}</text>
+        <text class="hero-title">{{statusHeadline}}</text>
+        <text class="hero-desc" wx:if="{{statusDescription}}">{{statusDescription}}</text>
+      </view>
+      <view class="hero-side">
+        <text class="hero-amount-label">实付金额</text>
+        <text class="hero-amount">¥{{order.payAmount || order.amount}}</text>
+      </view>
+    </view>
+
+    <view class="highlight-card" wx:if="{{order.status === 'unpaid'}}">
+      <text class="highlight-title">待付款提醒</text>
+      <view class="highlight-grid">
+        <view class="highlight-item">
+          <text class="highlight-label">订单号</text>
+          <text class="highlight-value mono">{{order.orderNo || order.no}}</text>
+        </view>
+        <view class="highlight-item">
+          <text class="highlight-label">支付状态</text>
+          <text class="highlight-value">待支付</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card progress-card" wx:if="{{order.status !== 'unpaid'}}">
+      <view class="card-head">
+        <text class="card-title">订单进度</text>
+      </view>
+      <view class="progress-list">
+        <view class="progress-item {{item.active ? 'progress-item--on' : ''}}" wx:for="{{progressSteps}}" wx:key="index">
+          <view class="progress-dot"></view>
+          <text class="progress-label">{{item.label}}</text>
+          <text class="progress-time">{{item.time || '待更新'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card product-card" bindtap="onViewProduct">
+      <view class="card-head">
+        <text class="card-title">商品信息</text>
+        <text class="card-link">查看商品</text>
+      </view>
+      <view class="product-body" wx:for="{{orderItems}}" wx:key="index">
+        <image class="product-cover" src="{{item.cover || item.img || order.cover}}" mode="aspectFill" />
+        <view class="product-main">
+          <text class="product-title">{{item.title}}</text>
+          <text class="product-spec">{{item.skuName || item.sku_name || '默认规格'}}</text>
+          <view class="pill-row">
+            <text class="soft-pill">数量 x{{item.quantity || item.qty || 1}}</text>
+            <text class="soft-pill">{{item.deliveryMode || item.delivery_mode || order.deliveryMode || '配送方式'}}</text>
+          </view>
+          <view class="amount-box" wx:if="{{index === orderItems.length - 1}}">
+            <view class="amount-row">
+              <text>商品金额</text>
+              <text>¥{{order.goodsAmount || order.amount}}</text>
+            </view>
+            <view class="amount-row">
+              <text>运费</text>
+              <text>¥{{order.shippingFee || '0.00'}}</text>
+            </view>
+            <view class="amount-row" wx:if="{{order.couponAmount && order.couponAmount !== '0.00'}}">
+              <text>优惠券抵扣</text>
+              <text class="amount-discount">-¥{{order.couponAmount}}</text>
+            </view>
+            <view class="amount-row amount-row--strong">
+              <text>实付款</text>
+              <text>¥{{order.payAmount || order.amount}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">物流与收货</text>
+      </view>
+      <view class="info-grid">
+        <view class="info-box">
+          <text class="info-label">收货人</text>
+          <text class="info-value">{{order.receiverName || '--'}}</text>
+          <text class="info-sub">{{order.receiverPhone || '--'}}</text>
+        </view>
+        <view class="info-box">
+          <text class="info-label">配送方式</text>
+          <text class="info-value">{{order.deliveryMode || '--'}}</text>
+          <text class="info-sub">运费 ¥{{order.shippingFee || '0.00'}}</text>
+        </view>
+        <view class="info-box info-box--wide">
+          <text class="info-label">收货地址</text>
+          <text class="info-value">{{order.receiverAddress || '--'}}</text>
+        </view>
+        <view class="info-box">
+          <text class="info-label">物流公司</text>
+          <text class="info-value">{{order.expressCompany || '待发货'}}</text>
+          <text class="info-sub">{{order.shippedTime || '尚未发货'}}</text>
+        </view>
+        <view class="info-box">
+          <text class="info-label">物流单号</text>
+          <text class="info-value">{{order.expressNo || '--'}}</text>
+          <text class="info-sub">{{order.shipRemark || '暂无发货备注'}}</text>
+        </view>
+      </view>
+
+      <view class="trace-card">
+        <view class="trace-head">
+          <text class="trace-title">物流跟踪</text>
+          <text class="trace-tip">{{order.expressLastQueryTime ? ('最近查询 ' + order.expressLastQueryTime) : '暂无更新'}}</text>
+        </view>
+        <block wx:if="{{order.expressLastContext || order.expressStatusDesc || order.expressStatus || order.expressNo || order.expressCompany || (order.expressTracks && order.expressTracks.length)}}">
+          <view class="trace-status-row">
+            <text class="trace-status-tag">{{order.expressStatusDesc || order.expressStatus || '运输中'}}</text>
+            <text class="trace-status-time">{{order.expressLastTime || '--'}}</text>
+          </view>
+          <text class="trace-context" wx:if="{{order.expressLastContext}}">{{order.expressLastContext}}</text>
+          <view class="trace-timeline" wx:if="{{order.expressTracks && order.expressTracks.length}}">
+            <view class="trace-node" wx:for="{{order.expressTracks}}" wx:key="index">
+              <view class="trace-node-line"></view>
+              <view class="trace-node-dot"></view>
+              <view class="trace-node-main">
+                <text class="trace-node-time">{{item.time || '--'}}</text>
+                <text class="trace-node-text">{{item.context || '--'}}</text>
+              </view>
+            </view>
+          </view>
+        </block>
+        <view wx:else class="trace-empty">
+          <text class="trace-empty-text">暂无物流更新</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">支付与发票</text>
+      </view>
+      <view class="stack-list">
+        <view class="stack-row">
+          <text>支付方式</text>
+          <text>{{order.paymentMethod === 'wechat' ? '微信支付' : (order.paymentMethod === 'balance_wechat' ? '余额+微信支付' : (order.paymentMethod === 'balance' ? '余额支付' : (order.paymentMethod || '--')))}}</text>
+        </view>
+        <view class="stack-row">
+          <text>支付状态</text>
+          <text>{{order.payStatusText}}</text>
+        </view>
+        <view class="stack-row">
+          <text>余额支付</text>
+          <text>¥{{order.balanceAmount || '0.00'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>微信支付</text>
+          <text>¥{{order.wechatAmount || '0.00'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>支付时间</text>
+          <text>{{order.payTime || '未支付'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>微信流水号</text>
+          <text class="mono">{{order.wxTransactionId || '--'}}</text>
+        </view>
+        <view class="stack-row" wx:if="{{order.refundedBalanceAmount && order.refundedBalanceAmount !== '0.00'}}">
+          <text>退回余额</text>
+          <text>¥{{order.refundedBalanceAmount}}</text>
+        </view>
+        <view class="stack-row" wx:if="{{order.refundedWechatAmount && order.refundedWechatAmount !== '0.00'}}">
+          <text>退款微信</text>
+          <text>¥{{order.refundedWechatAmount}}</text>
+        </view>
+      </view>
+
+      <view class="invoice-card" wx:if="{{(order.coupon && order.coupon.couponNo) || order.couponTitle || (order.couponAmount && order.couponAmount !== '0.00')}}">
+        <view class="invoice-head">
+          <text class="invoice-title">优惠券信息</text>
+          <text class="invoice-tag">{{order.couponTitle || (order.coupon && order.coupon.name) || '已使用优惠券'}}</text>
+        </view>
+        <view class="invoice-list">
+          <view class="stack-row">
+            <text>优惠券名称</text>
+            <text>{{order.couponTitle || (order.coupon && order.coupon.name) || '--'}}</text>
+          </view>
+          <view class="stack-row">
+            <text>优惠券编号</text>
+            <text class="mono">{{(order.coupon && order.coupon.couponNo) || '--'}}</text>
+          </view>
+          <view class="stack-row">
+            <text>优惠类型</text>
+            <text>{{(order.coupon && order.coupon.couponTypeText) || '--'}}</text>
+          </view>
+          <view class="stack-row">
+            <text>使用场景</text>
+            <text>{{(order.coupon && order.coupon.sceneText) || '商城'}}</text>
+          </view>
+          <view class="stack-row">
+            <text>优惠金额</text>
+            <text class="amount-discount">-¥{{order.couponAmount || '0.00'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="invoice-card">
+        <view class="invoice-head">
+          <text class="invoice-title">发票信息</text>
+          <text class="invoice-tag">{{invoiceSummary}}</text>
+        </view>
+        <view class="invoice-list">
+          <view class="stack-row" wx:for="{{invoiceLines}}" wx:key="label">
+            <text>{{item.label}}</text>
+            <text>{{item.value}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{order.afterSale}}">
+      <view class="card-head">
+        <text class="card-title">售后信息</text>
+      </view>
+      <view class="stack-list">
+        <view class="stack-row">
+          <text>售后单号</text>
+          <text class="mono">{{order.afterSale.afterSaleNo || '--'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>售后类型</text>
+          <text>{{order.afterSale.typeText || '--'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>售后状态</text>
+          <text>{{order.afterSale.statusText || '--'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>申请原因</text>
+          <text>{{order.afterSale.reason || '--'}}</text>
+        </view>
+        <view class="stack-row" wx:if="{{order.afterSale.adminRemark}}">
+          <text>审核备注</text>
+          <text>{{order.afterSale.adminRemark}}</text>
+        </view>
+        <view class="stack-row" wx:if="{{order.afterSale.rejectReason}}">
+          <text>拒绝原因</text>
+          <text>{{order.afterSale.rejectReason}}</text>
+        </view>
+        <view class="stack-row" wx:if="{{order.afterSale.returnExpressCompany || order.afterSale.returnExpressNo}}">
+          <text>退货物流</text>
+          <text>{{order.afterSale.returnExpressCompany || '--'}} {{order.afterSale.returnExpressNo || ''}}</text>
+        </view>
+      </view>
+
+      <view class="trace-card" wx:if="{{order.afterSale.returnExpressCompany || order.afterSale.returnExpressNo || order.afterSale.returnExpressLastContext || order.afterSale.returnExpressStatusDesc || order.afterSale.returnExpressStatus || (order.afterSale.returnExpressTracks && order.afterSale.returnExpressTracks.length)}}">
+        <view class="trace-head">
+          <text class="trace-title">退货物流</text>
+          <text class="trace-tip">{{order.afterSale.returnExpressLastQueryTime ? ('最近查询 ' + order.afterSale.returnExpressLastQueryTime) : '暂无更新'}}</text>
+        </view>
+        <view class="trace-status-row">
+          <text class="trace-status-tag">{{order.afterSale.returnExpressStatusDesc || order.afterSale.returnExpressStatus || '运输中'}}</text>
+          <text class="trace-status-time">{{order.afterSale.returnExpressLastTime || '--'}}</text>
+        </view>
+        <text class="trace-context" wx:if="{{order.afterSale.returnExpressLastContext}}">{{order.afterSale.returnExpressLastContext}}</text>
+        <view class="trace-timeline" wx:if="{{order.afterSale.returnExpressTracks && order.afterSale.returnExpressTracks.length}}">
+          <view class="trace-node" wx:for="{{order.afterSale.returnExpressTracks}}" wx:key="index">
+            <view class="trace-node-line"></view>
+            <view class="trace-node-dot"></view>
+            <view class="trace-node-main">
+              <text class="trace-node-time">{{item.time || '--'}}</text>
+              <text class="trace-node-text">{{item.context || '--'}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{order.review}}">
+      <view class="card-head">
+        <text class="card-title">我的评价</text>
+      </view>
+      <view class="review-detail-head">
+        <view class="review-stars">
+          <text
+            class="review-star review-star--filled"
+            wx:for="{{[1,2,3,4,5]}}"
+            wx:key="*this"
+          >{{item <= order.review.score ? '★' : '☆'}}</text>
+        </view>
+        <text class="review-time">{{order.review.createTime || '--'}}</text>
+      </view>
+      <text class="review-detail-content">{{order.review.content || '--'}}</text>
+      <view class="review-image-grid" wx:if="{{order.review.images && order.review.images.length}}">
+        <image class="review-image" wx:for="{{order.review.images}}" wx:key="index" src="{{item}}" mode="aspectFill" />
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">订单信息</text>
+      </view>
+      <view class="stack-list">
+        <view class="stack-row">
+          <text>订单号</text>
+          <text class="mono">{{order.orderNo || order.no}}</text>
+        </view>
+        <view class="stack-row">
+          <text>用户ID</text>
+          <text class="mono">{{order.userUid || '--'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>商品编号</text>
+          <text class="mono">{{order.goodsNo || '--'}}</text>
+        </view>
+        <view class="stack-row">
+          <text>下单时间</text>
+          <text>{{order.createTime || order.time}}</text>
+        </view>
+        <view class="stack-row">
+          <text>最近更新</text>
+          <text>{{order.updateTime || '--'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="safe-space" wx:if="{{order.status === 'unpaid' || order.status === 'unshipped' || order.status === 'pending_review' || (order.afterSale && order.afterSale.status === 'approved')}}"></view>
+
+    <view class="action-bar" wx:if="{{order.status === 'unpaid'}}">
+      <view class="action-price">
+        <text class="action-price-label">待支付金额</text>
+        <text class="action-price-value">¥{{order.payAmount || order.amount}}</text>
+      </view>
+      <text class="cancel-action" bindtap="onCancelOrderTap">取消订单</text>
+      <button class="pay-btn" loading="{{paying}}" bindtap="onRepayTap">继续支付</button>
+    </view>
+
+    <view class="action-bar" wx:if="{{order.status === 'unshipped'}}">
+      <view class="action-price">
+        <text class="action-price-label">订单已支付</text>
+        <text class="action-price-sub">发货前可取消，余额和优惠券会按规则退回</text>
+      </view>
+      <button class="ghost-btn ghost-btn--single" bindtap="onCancelOrderTap">取消订单</button>
+    </view>
+
+    <view class="action-bar action-bar--triple" wx:if="{{order.status === 'pending_review'}}">
+      <button class="ghost-btn" loading="{{receiving}}" bindtap="onConfirmReceiveTap">收货</button>
+      <button class="ghost-btn" bindtap="onOpenAfterSaleTap">售后</button>
+      <button class="pay-btn pay-btn--compact pay-btn--return" bindtap="onReviewTap">评价</button>
+    </view>
+
+    <view class="action-bar" wx:if="{{order.afterSale && order.afterSale.status === 'approved'}}">
+      <view class="action-price">
+        <text class="action-price-label">请填写退货物流</text>
+        <text class="action-price-sub">提交后我们会持续更新退货物流状态</text>
+      </view>
+      <button class="pay-btn pay-btn--return" loading="{{returnSubmitting}}" bindtap="onOpenReturnTap">填写物流</button>
+    </view>
+  </block>
+
+  <view class="loading-wrap" wx:elif="{{loading}}">
+    <text class="loading-text">订单加载中...</text>
+  </view>
+
+  <view class="sheet-mask" wx:if="{{afterSaleVisible}}" bindtap="onCloseAfterSaleTap"></view>
+  <view class="sheet-card" wx:if="{{afterSaleVisible}}">
+    <view class="sheet-head">
+      <text class="sheet-title">申请售后</text>
+      <text class="sheet-close" bindtap="onCloseAfterSaleTap">关闭</text>
+    </view>
+    <radio-group class="sheet-options" bindchange="onAfterSaleTypeChange">
+      <label class="sheet-option {{afterSaleType === 'refund_only' ? 'sheet-option--active' : ''}}">
+        <radio value="refund_only" checked="{{afterSaleType === 'refund_only'}}" />
+        <view class="sheet-option-main">
+          <text class="sheet-option-title">仅退款</text>
+          <text class="sheet-option-desc">无需退货，等待商家审核处理</text>
+        </view>
+      </label>
+      <label class="sheet-option {{afterSaleType === 'return_refund' ? 'sheet-option--active' : ''}}">
+        <radio value="return_refund" checked="{{afterSaleType === 'return_refund'}}" />
+        <view class="sheet-option-main">
+          <text class="sheet-option-title">退货退款</text>
+          <text class="sheet-option-desc">审核通过后按指引寄回商品</text>
+        </view>
+      </label>
+    </radio-group>
+    <view class="sheet-field">
+      <text class="sheet-label">售后原因</text>
+      <textarea
+        class="sheet-textarea"
+        value="{{afterSaleReason}}"
+        placeholder="请简要说明售后原因"
+        maxlength="100"
+        bindinput="onAfterSaleReasonInput"
+      />
+      <text class="sheet-counter">{{afterSaleReasonCount}}/100</text>
+    </view>
+    <view class="sheet-field">
+      <view class="sheet-evidence-head">
+        <text class="sheet-label">凭证图片</text>
+        <text class="sheet-evidence-tip">最多上传 1 张</text>
+      </view>
+      <view class="sheet-evidence-box" wx:if="{{afterSaleEvidenceImage}}">
+        <image class="sheet-evidence-image" src="{{afterSaleEvidenceImage}}" mode="aspectFill" />
+        <text class="sheet-evidence-remove" bindtap="onRemoveAfterSaleEvidenceTap">删除</text>
+      </view>
+      <button class="sheet-upload-btn" bindtap="onChooseAfterSaleEvidenceTap">上传凭证</button>
+    </view>
+    <button class="sheet-submit sheet-submit--return" loading="{{afterSaleSubmitting}}" bindtap="onSubmitAfterSaleTap">提交申请</button>
+  </view>
+
+  <view class="sheet-mask" wx:if="{{returnVisible}}" bindtap="onCloseReturnTap"></view>
+  <view class="sheet-card" wx:if="{{returnVisible}}">
+    <view class="sheet-head">
+      <text class="sheet-title">填写退货物流</text>
+      <text class="sheet-close" bindtap="onCloseReturnTap">关闭</text>
+    </view>
+    <view class="sheet-field">
+      <view class="sheet-evidence-head">
+        <text class="sheet-label">寄回信息</text>
+        <text class="sheet-copy-link" bindtap="onCopyReturnInfoTap">一键复制</text>
+      </view>
+      <view class="sheet-receiver-card">
+        <view class="sheet-receiver-row">
+          <text class="sheet-receiver-label">收货人</text>
+          <text class="sheet-receiver-value">{{returnReceiverName || '--'}}</text>
+        </view>
+        <view class="sheet-receiver-row">
+          <text class="sheet-receiver-label">联系电话</text>
+          <text class="sheet-receiver-value">{{returnReceiverPhone || '--'}}</text>
+        </view>
+        <view class="sheet-receiver-row sheet-receiver-row--top">
+          <text class="sheet-receiver-label">收货地址</text>
+          <text class="sheet-receiver-value">{{returnReceiverAddress || '--'}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="sheet-field">
+      <text class="sheet-label">物流公司</text>
+      <picker class="sheet-picker" mode="selector" range="{{returnExpressCompanyNames}}" value="{{returnExpressCompanyIndex}}" bindchange="onReturnCompanyChange">
+        <view class="sheet-input sheet-input--picker {{returnExpressCompany ? 'sheet-input--filled' : ''}}">
+          <text wx:if="{{returnExpressCompany}}">{{returnExpressCompany}}</text>
+          <text wx:else>请选择物流公司</text>
+        </view>
+      </picker>
+    </view>
+    <view class="sheet-field">
+      <text class="sheet-label">物流单号</text>
+      <input class="sheet-input" value="{{returnExpressNo}}" placeholder="请输入物流单号" bindinput="onReturnNoInput" />
+    </view>
+    <button class="sheet-submit sheet-submit--return" loading="{{returnSubmitting}}" bindtap="onSubmitReturnTap">提交物流</button>
+  </view>
+
+  <view class="sheet-mask" wx:if="{{reviewVisible}}" bindtap="onCloseReviewTap"></view>
+  <view class="sheet-card" wx:if="{{reviewVisible}}">
+    <view class="sheet-head">
+      <text class="sheet-title">提交评价</text>
+      <text class="sheet-close" bindtap="onCloseReviewTap">关闭</text>
+    </view>
+    <view class="sheet-field">
+      <text class="sheet-label">评分</text>
+      <view class="review-score-row">
+        <view
+          wx:for="{{reviewStarOptions}}"
+          wx:key="full"
+          class="review-score-star-wrap"
+        >
+          <text class="review-score-star-base">★</text>
+          <text
+            class="review-score-star-fill review-score-star-fill--{{reviewScore >= item.full ? 'full' : (reviewScore == item.half ? 'half' : 'none')}}"
+          >★</text>
+          <view class="review-score-hotspot review-score-hotspot--left" data-score="{{item.half}}" bindtap="onReviewScoreTap"></view>
+          <view class="review-score-hotspot review-score-hotspot--right" data-score="{{item.full}}" bindtap="onReviewScoreTap"></view>
+        </view>
+        <text class="review-score-value">{{reviewScore}} 分</text>
+      </view>
+    </view>
+    <view class="sheet-field">
+      <text class="sheet-label">评价内容</text>
+      <textarea
+        class="sheet-textarea"
+        value="{{reviewContent}}"
+        placeholder="说说这次购物体验吧"
+        maxlength="100"
+        bindinput="onReviewContentInput"
+      />
+      <text class="sheet-counter">{{reviewContentCount}}/100</text>
+    </view>
+    <view class="sheet-field">
+      <view class="sheet-evidence-head">
+        <text class="sheet-label">评价图片（选传）</text>
+        <text class="sheet-evidence-tip">最多上传 3 张</text>
+      </view>
+      <view class="review-upload-grid">
+        <view class="review-upload-card" wx:for="{{reviewImages}}" wx:key="index">
+          <image class="review-upload-image" src="{{item}}" mode="aspectFill" />
+          <text class="review-upload-remove" data-index="{{index}}" bindtap="onRemoveReviewImageTap">删除</text>
+        </view>
+        <view wx:if="{{reviewImages.length < 3}}" class="review-upload-btn" bindtap="onChooseReviewImageTap">
+          <text class="review-upload-plus">+</text>
+          <text class="review-upload-text">添加图片</text>
+        </view>
+      </view>
+    </view>
+    <button class="sheet-submit sheet-submit--return" loading="{{reviewSubmitting}}" bindtap="onSubmitReviewTap">提交评价</button>
+  </view>
+</view>

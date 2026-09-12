@@ -1,0 +1,245 @@
+<view class="page">
+  <block wx:if="{{!notFound}}">
+  <view class="hero-wrap" wx:if="{{detail.images && detail.images.length}}">
+    <swiper
+      class="gallery"
+      indicator-dots
+      autoplay
+      circular
+      interval="{{4200}}"
+      duration="{{420}}"
+      bindchange="onGalleryChange"
+    >
+      <swiper-item wx:for="{{detail.images}}" wx:key="index">
+        <image class="gallery-img" src="{{item}}" mode="aspectFill" />
+      </swiper-item>
+    </swiper>
+    <view class="hero-chip">农场严选</view>
+    <view class="hero-page">{{galleryIndex + 1}} / {{detail.images.length}}</view>
+  </view>
+
+  <view class="price-panel">
+    <view class="price-head">
+      <view class="price-main">
+        <text class="currency">¥</text>
+        <text class="price">{{displayPrice}}</text>
+        <text class="origin">¥{{displayOriginPrice}}</text>
+        <text class="save">立省 ¥{{savePrice}}</text>
+      </view>
+      <view class="discount-box">
+        <text class="discount-num">{{discountText}} 折</text>
+        <text class="discount-sub">限时到手价</text>
+      </view>
+    </view>
+
+    <text class="name">{{detail.name}}</text>
+    <text class="intro">{{detail.intro}}</text>
+
+    <view class="tag-row">
+      <text class="tag" wx:for="{{detail.tags}}" wx:key="index">{{item}}</text>
+    </view>
+
+    <view class="meta-row">
+      <text class="meta-item">月销 {{monthlySales}}</text>
+      <text class="meta-dot">·</text>
+      <text class="meta-item">{{reviewCount}} 人评价</text>
+      <text class="meta-dot">·</text>
+      <text class="meta-item">好评 {{reviewRate}}</text>
+    </view>
+  </view>
+
+  <view class="coupon" bindtap="onCouponTap" hover-class="coupon-hover">
+    <view class="coupon-left">
+      <text class="coupon-title">领券中心</text>
+      <text class="coupon-sub">满额立减福利，多买多省，新客专属优惠券</text>
+    </view> 
+    <text class="coupon-btn">立即领取</text>
+  </view>
+
+  <view class="card quick-card">
+    <view class="quick-row" bindtap="onSpecTap" hover-class="row-hover">
+      <text class="quick-label">已选</text>
+      <text class="quick-value">{{selectedSkuText}}</text>
+      <text class="quick-arrow">›</text>
+    </view>
+    <view class="quick-row" bindtap="onDeliveryTap" hover-class="row-hover">
+      <text class="quick-label">配送</text>
+      <text class="quick-value">{{deliveryDesc}}</text>
+      <text class="quick-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{services && services.length}}">
+    <text class="section-title">服务保障</text>
+    <view class="service-grid">
+      <view class="service-item" wx:for="{{services}}" wx:key="index">
+        <text class="service-dot"></text>
+        <text class="service-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="title-line">
+      <text class="section-title section-title--mb0">买家评价（{{reviewCount}}）</text>
+      <view class="review-head-actions">
+        <text class="review-rate">好评率 {{reviewRate}}</text>
+        <text wx:if="{{reviewCount != '0'}}" class="review-more" bindtap="onMoreReviewsTap">查看更多</text>
+      </view>
+    </view>
+    <view class="review-tags" wx:if="{{detail.reviewList && detail.reviewList.length}}">
+      <text class="review-tag">新鲜度高</text>
+      <text class="review-tag">配送及时</text>
+      <text class="review-tag">回购率高</text>
+    </view>
+    <block wx:if="{{detail.reviewList && detail.reviewList.length}}">
+      <view class="review-box" wx:for="{{detail.reviewList}}" wx:key="id" wx:for-index="reviewIndex">
+        <view class="review-head">
+          <text class="review-user">{{item.nickname || '农场用户'}}</text>
+          <text class="review-time">{{item.createTime || '--'}}</text>
+        </view>
+        <text class="review-star-text">{{item.score}} 星好评</text>
+        <text class="review-content">{{item.content}}</text>
+        <view class="review-image-row" wx:if="{{item.images && item.images.length}}">
+          <image
+            class="review-image"
+            wx:for="{{item.images}}"
+            wx:for-item="img"
+            wx:for-index="imgIndex"
+            wx:key="index"
+            src="{{img}}"
+            mode="aspectFill"
+            data-review-index="{{reviewIndex}}"
+            data-image-index="{{imgIndex}}"
+            bindtap="onPreviewReviewImageTap"
+          />
+        </view>
+      </view>
+    </block>
+    <view class="review-box" wx:else>
+      <text class="review-content">暂时还没有新的买家评价。</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{specRows && specRows.length}}">
+    <text class="section-title">商品参数</text>
+    <view class="spec-list">
+      <view class="spec-row" wx:for="{{specRows}}" wx:key="label">
+        <text class="spec-k">{{item.label}}</text>
+        <text class="spec-v">{{item.value}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="section-title">图文详情</text>
+    <rich-text wx:if="{{detailHtmlNodes && detailHtmlNodes.length}}" class="detail-rich" nodes="{{detailHtmlNodes}}" />
+    <block wx:if="{{!detailHtmlNodes || !detailHtmlNodes.length}}">
+      <image class="detail-img" wx:for="{{detail.images}}" wx:key="index" src="{{item}}" mode="widthFix" />
+    </block>
+  </view>
+
+  <view class="card" wx:if="{{detail.mayLike && detail.mayLike.length}}">
+    <text class="section-title">猜你喜欢</text>
+    <view class="recommend-grid">
+      <view
+        class="recommend-item"
+        wx:for="{{detail.mayLike}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onLikeTap"
+        hover-class="recommend-item-hover"
+      >
+        <image class="recommend-img" src="{{item.img}}" mode="aspectFill" />
+        <view class="recommend-body">
+          <text class="recommend-name">{{item.name}}</text>
+          <view class="recommend-foot">
+            <text class="recommend-price">{{item.price}}</text>
+            <text class="recommend-buy">去看看</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</block>
+
+  <view class="card warn" wx:if="{{notFound}}">
+    <text class="warn-text">未找到对应商品</text>
+  </view>
+
+  <view class="spec-popup-mask" wx:if="{{showSpecPopup}}" bindtap="onMaskTap">
+    <view class="spec-popup" catchtap="onSpecPanelTap">
+      <view class="spec-close" bindtap="closeSpecPopup">×</view>
+      <view class="spec-popup-head">
+        <image class="spec-popup-cover" src="{{detail.images[0]}}" mode="aspectFill" />
+        <view class="spec-popup-info">
+          <view class="spec-popup-price">
+            <text class="spec-popup-currency">¥</text>
+            <text class="spec-popup-price-num">{{displayPrice}}</text>
+            <text class="spec-popup-origin">¥{{displayOriginPrice}}</text>
+          </view>
+          <text class="spec-popup-title">{{detail.name}}</text>
+          <text class="spec-popup-sub">已选：{{selectedSkuText}}</text>
+        </view>
+      </view>
+
+      <view class="spec-block">
+        <text class="spec-block-title">规格</text>
+        <view class="sku-chip-row">
+          <view
+            class="sku-chip {{selectedSkuIndex === index ? 'sku-chip--active' : ''}}"
+            wx:for="{{detail.skuRows}}"
+            wx:key="name"
+            data-index="{{index}}"
+            bindtap="onSkuTap"
+          >
+            {{item.name}}
+          </view>
+        </view>
+      </view>
+
+      <view class="spec-block" wx:if="{{detail.deliveryOptions && detail.deliveryOptions.length}}">
+        <text class="spec-block-title">配送方式</text>
+        <view class="sku-chip-row">
+          <view
+            class="sku-chip {{selectedDeliveryValue === item.value ? 'sku-chip--active' : ''}}"
+            wx:for="{{detail.deliveryOptions}}"
+            wx:key="value"
+            data-value="{{item.value}}"
+            bindtap="onDeliveryOptionTap"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="spec-count-row">
+        <view class="count-title-wrap">
+          <text class="spec-block-title spec-block-title--no-margin">数量</text>
+          <text class="count-stock" wx:if="{{selectedSkuIndex >= 0}}">库存 {{detail.skuRows[selectedSkuIndex].stock}}</text>
+        </view>
+        <view class="count-stepper">
+          <view class="count-btn" bindtap="onCountMinus">-</view>
+          <input class="count-input" type="number" value="{{buyCount}}" bindinput="onCountInput" />
+          <view class="count-btn" bindtap="onCountPlus">+</view>
+        </view>
+      </view>
+
+      <view class="spec-action-bar">
+        <view class="spec-confirm" bindtap="onSpecConfirm">{{specPopupTitle}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar" wx:if="{{!notFound}}">
+    <button class="action-icon action-contact" open-type="contact" hover-class="action-icon-hover">客服</button>
+    <view class="action-icon {{isFavorited ? 'action-icon--fav' : ''}}" bindtap="onFavoriteTap" hover-class="action-icon-hover">
+      {{isFavorited ? '已收藏' : '收藏'}}
+    </view>
+    <view class="action-main">
+      <view class="add-cart" bindtap="onAddCartTap" hover-class="add-cart-hover">加入购物车</view>
+      <view class="buy-now" bindtap="onBuyTap" hover-class="buy-now-hover">立即购买</view>
+    </view>
+  </view>
+</view>

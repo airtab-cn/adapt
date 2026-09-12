@@ -1,0 +1,121 @@
+<view class="page">
+  <view class="hero-card">
+    <view class="hero-bg-circle hero-bg-circle-a"></view>
+    <view class="hero-bg-circle hero-bg-circle-b"></view>
+    <view class="hero-main">
+      <view class="hero-kicker-row">
+        <text class="hero-kicker">LIVE FARM</text>
+        <view class="hero-live"><view class="hero-live-dot"></view><text>实时监控</text></view>
+      </view>
+      <text class="hero-title">农场监控中心</text>
+      <text class="hero-sub">连接鸡舍、散养区和仓储区，随时看看农场现在的状态。</text>
+    </view>
+    <view class="hero-lens">
+      <view class="lens-ring"></view>
+      <view class="lens-core"></view>
+    </view>
+  </view>
+
+  <view class="summary-row">
+    <view class="summary-card">
+      <text class="summary-label">监控区域</text>
+      <text class="summary-value">{{areaCount}}</text>
+    </view>
+    <view class="summary-card summary-card-main">
+      <text class="summary-label">当前摄像头</text>
+      <text class="summary-value">{{cameraCount}}</text>
+    </view>
+    <view class="summary-card">
+      <text class="summary-label">更新</text>
+      <text class="summary-value summary-time">{{updatedAt}}</text>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view>
+      <text class="section-title">监控区域</text>
+      <text class="section-sub">点击区域切换画面列表</text>
+    </view>
+    <text class="section-pill">{{activeAreaName}}</text>
+  </view>
+
+  <scroll-view class="area-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+    <view
+      wx:for="{{areas}}"
+      wx:key="id"
+      class="area-card {{item.active ? 'area-card-active' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onAreaTap"
+    >
+      <view class="area-cover">
+        <block wx:if="{{item.cover}}">
+          <image class="area-cover-img" src="{{item.cover}}" mode="aspectFill" />
+        </block>
+        <block wx:else>
+          <view class="area-cover-fallback">
+            <view class="area-cover-dot"></view>
+          </view>
+        </block>
+      </view>
+      <view class="area-info">
+        <text class="area-name">{{item.name}}</text>
+        <text class="area-count">{{item.cameraCount}} 路画面</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="section-head camera-head">
+    <view>
+      <text class="section-title">实时画面</text>
+      <text class="section-sub">{{activeAreaName}} · {{cameraCount}} 路画面</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="state-card">
+    <view class="spinner"></view>
+    <text>正在同步监控画面...</text>
+  </view>
+
+  <view wx:elif="{{cameras.length === 0}}" class="state-card empty-card">
+    <view class="empty-camera">
+      <view class="empty-lens"></view>
+    </view>
+    <text>{{emptyText}}</text>
+  </view>
+
+  <view wx:else class="camera-list">
+    <view
+      wx:for="{{cameras}}"
+      wx:key="id"
+      class="camera-card"
+      data-id="{{item.id}}"
+      data-name="{{item.title}}"
+      catchtap="onCameraTap"
+    >
+      <view class="camera-cover-wrap">
+        <image class="camera-cover" src="{{item.cover}}" mode="aspectFill" />
+        <view class="camera-cover-shade"></view>
+        <view class="camera-status {{item.statusClass}}">
+          <view class="camera-status-dot"></view>
+          <text>{{item.statusText}}</text>
+        </view>
+        <view class="camera-no">{{item.cameraNo}}</view>
+      </view>
+      <view class="camera-body">
+        <view class="camera-title-row">
+          <text class="camera-name">{{item.title}}</text>
+          <view
+            class="camera-action"
+            data-id="{{item.id}}"
+            data-name="{{item.title}}"
+            catchtap="onCameraTap"
+          >查看</view>
+        </view>
+        <view class="camera-meta">
+          <text>{{item.description}}</text>
+        </view>
+        <text wx:if="{{item.remark}}" class="camera-remark">{{item.remark}}</text>
+      </view>
+    </view>
+  </view>
+</view>

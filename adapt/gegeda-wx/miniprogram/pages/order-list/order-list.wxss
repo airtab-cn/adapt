@@ -1,0 +1,169 @@
+.page {
+  min-height: 100vh;
+  padding: 20rpx 24rpx 28rpx;
+  box-sizing: border-box;
+  background: #f2f3f1;
+}
+
+.tab-strip {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.tab-strip-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  padding-right: 12rpx;
+}
+
+.tab-item {
+  min-width: 118rpx;
+  height: 62rpx;
+  line-height: 62rpx;
+  text-align: center;
+  border-radius: 999rpx;
+  background: #ffffff;
+  border: 1rpx solid #e6e8eb;
+  padding: 0 16rpx;
+  box-sizing: border-box;
+}
+
+.tab-item-hover {
+  opacity: 0.86;
+}
+
+.tab-item--on {
+  background: #f1f8e9;
+  border-color: #c5e1a5;
+}
+
+.tab-txt {
+  font-size: 23rpx;
+  color: #6b7280;
+}
+
+.tab-item--on .tab-txt {
+  color: #689f38;
+  font-weight: 700;
+}
+
+.list-wrap {
+  margin-top: 16rpx;
+}
+
+.order-card {
+  margin-bottom: 14rpx;
+  padding: 18rpx;
+  border-radius: 14rpx;
+  background: #ffffff;
+  border: 1rpx solid #e8e9e7;
+  box-shadow: 0 4rpx 14rpx rgba(0, 0, 0, 0.04);
+}
+
+.order-card-hover {
+  opacity: 0.9;
+}
+
+.order-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.order-no {
+  font-size: 22rpx;
+  color: #6b7280;
+}
+
+.order-status {
+  font-size: 22rpx;
+  color: #689f38;
+  font-weight: 700;
+}
+
+.order-body {
+  margin-top: 14rpx;
+  display: flex;
+  align-items: stretch;
+  gap: 14rpx;
+}
+
+.order-cover {
+  width: 132rpx;
+  height: 132rpx;
+  border-radius: 12rpx;
+  background: #eceff1;
+  flex-shrink: 0;
+}
+
+.order-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-title {
+  display: block;
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #1f2329;
+  line-height: 1.4;
+}
+
+.order-spec {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #8b96a6;
+}
+
+.order-foot {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-qty {
+  font-size: 22rpx;
+  color: #8b96a6;
+}
+
+.order-price {
+  font-size: 30rpx;
+  color: #ff5a1f;
+  font-weight: 700;
+}
+
+.order-time {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 21rpx;
+  color: #9ca3af;
+}
+
+.empty {
+  margin-top: 12rpx;
+  border-radius: 14rpx;
+  padding: 56rpx 16rpx;
+  text-align: center;
+  background: #ffffff;
+  border: 1rpx solid #e8e9e7;
+}
+
+.empty-title {
+  display: block;
+  font-size: 30rpx;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.empty-sub {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #9ca3af;
+}

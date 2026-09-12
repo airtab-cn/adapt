@@ -1,0 +1,68 @@
+<view class="page">
+  <view class="hero">
+    <text class="hero-title">{{bannerTitle}}</text>
+    <text class="hero-sub">{{bannerSub}}</text>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">热门活动</text>
+      <text class="section-sub">持续更新</text>
+    </view>
+
+    <view
+      wx:for="{{activities}}"
+      wx:key="id"
+      class="act-card"
+      data-id="{{item.id}}"
+      bindtap="onActivityTap"
+      hover-class="act-card-hover"
+    >
+      <image class="act-cover" src="{{item.cover}}" mode="aspectFill" />
+      <view class="act-body">
+        <view class="act-top">
+          <view class="tag-wrap">
+            <text class="act-tag" wx:for="{{item.tags}}" wx:key="index">{{item}}</text>
+          </view>
+          <text class="act-status {{item.status === 'ongoing' ? 'act-status--on' : (item.status === 'ended' ? 'act-status--end' : 'act-status--wait')}}">
+            {{item.statusText}}
+          </text>
+        </view>
+        <text class="act-title">{{item.name}}</text>
+        <text class="act-sub">{{item.description}}</text>
+        <text class="act-sub" wx:if="{{item.highlights}}">亮点：{{item.highlights}}</text>
+        <view class="act-foot">
+          <text class="act-date">{{item.eventTime}}</text>
+          <text class="act-action">查看详情</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section section--rules">
+    <view class="section-head">
+      <text class="section-title">活动规则</text>
+      <text class="section-sub">RULES</text>
+    </view>
+    <view class="rule-row" wx:for="{{rules}}" wx:key="index">
+      <view class="rule-dot" />
+      <text class="rule-text">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">活动留言板</text>
+      <text class="section-sub">MESSAGE BOARD</text>
+    </view>
+    <view wx:if="{{messageBoard.length === 0}}" class="empty-text">暂无留言</view>
+    <view wx:for="{{messageBoard}}" wx:key="id" class="message-item">
+      <view class="message-top">
+        <text class="message-user">{{item.userName}}</text>
+        <text class="message-time">{{item.createTime}}</text>
+      </view>
+      <text class="message-activity" wx:if="{{item.activityName}}">活动：{{item.activityName}}</text>
+      <text class="message-content">{{item.content}}</text>
+    </view>
+  </view>
+</view>

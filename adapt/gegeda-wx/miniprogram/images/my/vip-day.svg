@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <circle cx="30" cy="30" r="28" fill="#f5f5f5" stroke="#e6a23c" stroke-width="2"/>
+  <polygon points="30,10 35.5,22 49,23.5 39.5,32.5 42,46 30,39.5 18,46 20.5,32.5 11,23.5 24.5,22" fill="#e6a23c"/>
+  <text x="30" y="29" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#ffffff">VIP</text>
+  <text x="30" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#e6a23c">会员日</text>
+</svg> 

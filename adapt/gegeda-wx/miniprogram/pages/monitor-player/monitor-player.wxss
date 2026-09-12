@@ -1,0 +1,31 @@
+.page { min-height: 100vh; padding: 26rpx 24rpx 46rpx; box-sizing: border-box; background: linear-gradient(180deg, #f8fbf4 0%, #f5f8ef 52%, #ffffff 100%); color: #24341f; }
+.top-panel { position: relative; overflow: hidden; padding: 28rpx 30rpx 30rpx; border-radius: 34rpx; background: linear-gradient(135deg, #ffffff 0%, #f1faeb 100%); border: 1rpx solid #dfeeda; box-shadow: 0 22rpx 54rpx rgba(66, 103, 48, .11); }
+.top-panel::after { content: ''; position: absolute; right: -90rpx; top: -110rpx; width: 260rpx; height: 260rpx; border-radius: 50%; background: rgba(120, 188, 91, .15); }
+.top-kicker-row { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 20rpx; }
+.kicker { color: #6aa94f; font-size: 21rpx; font-weight: 900; letter-spacing: 4rpx; }
+.online-pill { display: inline-flex; align-items: center; gap: 8rpx; height: 40rpx; padding: 0 16rpx; border-radius: 999rpx; background: #eef9e8; color: #4b963c; font-size: 21rpx; font-weight: 800; }
+.online-dot { width: 10rpx; height: 10rpx; border-radius: 50%; background: #61d34d; box-shadow: 0 0 14rpx rgba(97, 211, 77, .7); }
+.title { position: relative; z-index: 2; display: block; margin-top: 18rpx; color: #22351d; font-size: 42rpx; line-height: 1.28; font-weight: 900; }
+.camera-tags { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 18rpx; }
+.camera-tags text { height: 42rpx; padding: 0 16rpx; border-radius: 999rpx; background: rgba(255,255,255,.84); border: 1rpx solid #dcebd4; color: #62745a; font-size: 21rpx; line-height: 42rpx; }
+.player-card { overflow: hidden; margin-top: 22rpx; border-radius: 34rpx; background: #ffffff; border: 1rpx solid #e1ecd9; box-shadow: 0 24rpx 60rpx rgba(53, 79, 42, .12); }
+.player-topbar { display: flex; align-items: center; justify-content: space-between; height: 74rpx; padding: 0 24rpx; box-sizing: border-box; color: #7d8a76; font-size: 22rpx; background: linear-gradient(135deg, #ffffff, #f8fcf5); border-bottom: 1rpx solid #e6efdf; }
+.player-title { display: flex; align-items: center; gap: 10rpx; color: #2c4226; font-weight: 900; }
+.rec-dot { width: 12rpx; height: 12rpx; border-radius: 50%; background: #62d24e; box-shadow: 0 0 16rpx rgba(98, 210, 78, .75); }
+.player-stage { position: relative; overflow: hidden; height: 396rpx; padding-right: 36rpx; box-sizing: border-box; background: #10170f; }
+.ez-player { display: block; width: 100%; height: 396rpx; background: #10170f; }
+.player-state { position: relative; overflow: hidden; height: 396rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22rpx; color: rgba(255,255,255,.78); font-size: 25rpx; background: radial-gradient(circle at center, #263821 0%, #10170f 62%, #0a0f09 100%); }
+.cover-backdrop { position: absolute; left: 0; right: 0; top: 0; bottom: 0; opacity: .22; filter: blur(6rpx); }
+.cover-backdrop image { width: 100%; height: 100%; }
+.spinner { position: relative; z-index: 2; width: 48rpx; height: 48rpx; border-radius: 50%; border: 5rpx solid rgba(255,255,255,.18); border-top-color: #8ded70; animation: spin .9s linear infinite; }
+.player-state text { position: relative; z-index: 2; }
+.error-state { padding: 0 44rpx; box-sizing: border-box; text-align: center; }
+.error-icon { position: relative; width: 112rpx; height: 90rpx; border-radius: 26rpx; background: rgba(255,255,255,.08); border: 1rpx solid rgba(255,255,255,.12); }
+.error-icon::before { content: ''; position: absolute; left: 28rpx; top: 27rpx; width: 56rpx; height: 36rpx; border-radius: 12rpx; border: 5rpx solid rgba(158,232,132,.82); box-sizing: border-box; }
+.retry-btn { min-width: 164rpx; height: 62rpx; padding: 0 28rpx; border-radius: 999rpx; border: 1rpx solid rgba(158,232,132,.88); color: #9ee884; line-height: 62rpx; font-weight: 900; }
+.info-card { margin-top: 22rpx; padding: 10rpx 24rpx; border-radius: 30rpx; background: #ffffff; border: 1rpx solid #e6efdf; box-shadow: 0 16rpx 40rpx rgba(61, 86, 49, .08); }
+.info-row { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; min-height: 78rpx; border-bottom: 1rpx solid #f0f4ec; }
+.info-row:last-child { border-bottom: 0; }
+.info-label { color: #819077; font-size: 24rpx; }
+.info-value { flex: 1; color: #263a21; font-size: 25rpx; font-weight: 800; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@keyframes spin { to { transform: rotate(360deg); } }

@@ -1,0 +1,474 @@
+<view class="page">
+  <scroll-view class="main-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <swiper
+      wx:if="{{adoptions.length}}"
+      class="adopt-swiper"
+      current="{{adoptionIndex}}"
+      bindchange="onAdoptionSwiperChange"
+      duration="{{320}}"
+      easing-function="easeOutCubic"
+    >
+      <swiper-item wx:for="{{adoptions}}" wx:key="id">
+        <view class="adopt-slide">
+          <view class="hero">
+            <view class="hero-glow hero-glow--a" />
+            <view class="hero-glow hero-glow--b" />
+            <view class="hero-inner">
+              <view class="hero-badge">
+                <text class="hero-badge-txt">认养档案</text>
+              </view>
+              <view class="hero-row">
+                <view class="hero-avatar-wrap">
+                  <image class="hero-avatar" src="{{item.avatar}}" mode="aspectFill" />
+                  <view class="hero-avatar-ring" />
+                </view>
+                <view class="hero-meta">
+                  <view class="hero-name-row">
+                    <text class="hero-name">{{item.name}}</text>
+                    <view class="hero-tool-stack">
+                      <view
+                        class="hero-share-btn"
+                        data-id="{{item.id}}"
+                        catchtap="onPosterTap"
+                        hover-class="hero-share-btn-hover"
+                      >
+                        <image class="hero-share-img" src="/images/adopt/share.svg" mode="aspectFit" />
+                      </view>
+                      <view
+                        class="hero-monitor {{item.monitorCameraId && item.canViewMonitor && !item.isVirtual ? 'hero-monitor--active' : 'hero-monitor--disabled'}}"
+                        data-id="{{item.id}}"
+                        catchtap="onMonitorTap"
+                        hover-class="hero-monitor-hover"
+                      >
+                        <image class="hero-monitor-icon" src="/images/adopt/monitor.svg" mode="aspectFit" />
+                      </view>
+                    </view>
+                  </view>
+                  <text class="hero-ring">脚环 {{item.ringNo}}</text>
+                  <view class="hero-mood" wx:if="{{item.mood}}">
+                    <text class="hero-mood-txt">{{item.mood}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class="section adopt-card">
+            <view class="section-head section-head--rule">
+              <view class="section-head-left">
+                <text class="section-title">认养周期</text>
+              </view>
+              <view
+                class="section-pill {{item.statusText === '待确认' || item.statusText === '确认失败' || item.statusText === '未开始' || item.statusText === '已结束' || item.statusText === '已完成' ? 'section-pill--muted' : ''}}"
+                wx:if="{{item.statusText}}"
+              >
+                <text class="section-pill-txt">{{item.statusText}}</text>
+              </view>
+            </view>
+            <view class="timeline">
+              <view class="timeline-node">
+                <text class="timeline-label">开始</text>
+                <text class="timeline-date">{{item.startLabel}}</text>
+              </view>
+              <view class="timeline-bar-wrap">
+                <view class="timeline-bar-bg">
+                  <view class="timeline-bar-fill" style="width: {{item.progressPercent}}%;" />
+                </view>
+                <text class="timeline-pct">{{item.progressPercent}}%</text>
+              </view>
+              <view class="timeline-node timeline-node--end">
+                <text class="timeline-label">结束</text>
+                <text class="timeline-date">{{item.endLabel}}</text>
+              </view>
+            </view>
+            <view class="adopt-stats">
+              <view class="adopt-stat">
+                <text class="adopt-stat-num">{{item.daysPassed}}</text>
+                <text class="adopt-stat-unit">天</text>
+                <text class="adopt-stat-label">已陪伴</text>
+              </view>
+              <view class="adopt-stat-divider" />
+              <view class="adopt-stat">
+                <text class="adopt-stat-num">{{item.daysLeft}}</text>
+                <text class="adopt-stat-unit">天</text>
+                <text class="adopt-stat-label">剩余天数</text>
+              </view>
+              <view class="adopt-stat-divider" />
+              <view class="adopt-stat">
+                <text class="adopt-stat-num">{{item.daysTotal}}</text>
+                <text class="adopt-stat-unit">天</text>
+                <text class="adopt-stat-label">总周期</text>
+              </view>
+              <view class="adopt-stat-divider" />
+              <view
+                class="adopt-stat adopt-stat--tap"
+                data-id="{{item.id}}"
+                bindtap="onGiftStatTap"
+                hover-class="adopt-stat-hover"
+              >
+                <text class="adopt-stat-num">{{item.giftShipments ? item.giftShipments.length : 0}}</text>
+                <text class="adopt-stat-unit">期</text>
+                <text class="adopt-stat-label">已赠送</text>
+              </view>
+            </view>
+          </view>
+
+          <view
+            class="ai-teaser ai-teaser--slide {{item.isVirtual ? 'ai-teaser--disabled' : ''}}"
+            data-id="{{item.id}}"
+            bindtap="openChat"
+            hover-class="{{item.isVirtual ? '' : 'ai-teaser-hover'}}"
+          >
+            <view class="ai-teaser-glow ai-teaser-glow--a" />
+            <view class="ai-teaser-glow ai-teaser-glow--b" />
+            <view class="ai-teaser-icon-wrap">
+              <image class="ai-teaser-avatar" src="{{item.avatar}}" mode="aspectFill" />
+            </view>
+            <view class="ai-teaser-body">
+              <view class="ai-teaser-head">
+                <view class="ai-teaser-title-row">
+                  <text class="ai-teaser-title">和它聊聊</text>
+                  <view class="ai-teaser-btn">
+                    <text class="ai-teaser-btn-txt">{{item.isVirtual ? '认养后开启' : '聊一聊'}}</text>
+                  </view>
+                </view>
+                <view class="ai-teaser-badges">
+                  <text class="ai-teaser-badge">{{item.isVirtual ? '待认养' : '实时互动'}}</text>
+                  <text class="ai-teaser-badge ai-teaser-badge--soft">{{item.isVirtual ? '聊天未开启' : '农场日常'}}</text>
+                </view>
+              </view>
+              <text class="ai-teaser-sub">{{chatTeaserText}}</text>
+            </view>
+          </view>
+
+          <view class="adopt-swiper-foot" wx:if="{{adoptionTotal >= 1}}">
+            <view class="adopt-swiper-dots">
+              <view
+                wx:for="{{adoptions}}"
+                wx:for-index="dotIdx"
+                wx:key="id"
+                class="adopt-dot {{adoptionIndex === dotIdx ? 'adopt-dot--on' : ''}}"
+              />
+            </view>
+            <text class="adopt-swiper-hint">左右滑动查看 · {{adoptionIndexDisplay}} / {{adoptionTotal}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+
+    <view class="section adopt-goods-section">
+      <view class="section-head section-head--rule">
+        <view class="section-head-left">
+          <text class="section-title">认养好物</text>
+        </view>
+      </view>
+      <scroll-view class="adopt-goods-tag-strip" scroll-x enable-flex show-scrollbar="{{false}}">
+        <view class="adopt-goods-tag-inner">
+          <view
+            wx:for="{{adoptGoodsCategories}}"
+            wx:key="id"
+            class="adopt-goods-tag {{activeAdoptGoodsCategoryId === item.id ? 'adopt-goods-tag--on' : ''}}"
+            data-id="{{item.id}}"
+            bindtap="onAdoptGoodsCategoryTap"
+            hover-class="adopt-goods-tag-hover"
+          >
+            <text class="adopt-goods-tag-txt">{{item.label}}</text>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="adopt-goods-list">
+        <view
+          wx:for="{{adoptGoodsDisplayList}}"
+          wx:key="id"
+          class="adopt-plan-row"
+          data-id="{{item.id}}"
+          data-name="{{item.name}}"
+          bindtap="onAdoptPlanRowTap"
+          hover-class="adopt-plan-row-hover"
+        >
+          <image class="adopt-plan-img" src="{{item.img}}" mode="aspectFill" />
+          <view class="adopt-plan-main">
+            <text class="adopt-plan-title">{{item.name}}</text>
+            <view class="adopt-plan-meta">
+              <text class="adopt-plan-cycle">{{item.cycle}}</text>
+              <text class="adopt-plan-cycle" wx:if="{{item.eggText}}">{{item.eggText}}</text>
+            </view>
+            <view class="adopt-plan-foot">
+              <text class="adopt-plan-price">￥{{item.price}}</text>
+              <view
+                class="adopt-plan-btn"
+                data-id="{{item.id}}"
+                data-name="{{item.name}}"
+                catchtap="onAdoptNowTap"
+                hover-class="adopt-plan-btn-hover"
+              >
+                <text class="adopt-plan-btn-txt">立即认养</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="adopt-goods-empty" wx:if="{{adoptGoodsDisplayList.length === 0}}">
+          <text class="adopt-goods-empty-txt">暂无内容</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="scroll-pad" />
+  </scroll-view>
+
+  <view class="chat-overlay" wx:if="{{chatVisible}}">
+    <view class="chat-mask" bindtap="closeChat" catchtouchmove="noop" />
+    <view class="chat-panel" catchtouchmove="noop">
+      <view class="chat-panel-grab" />
+      <view class="chat-head">
+        <view class="chat-head-left">
+          <image class="chat-head-avatar" src="{{currentChicken.avatar}}" mode="aspectFill" />
+          <view class="chat-head-meta">
+            <text class="chat-head-name">{{currentChicken.name}}</text>
+          </view>
+        </view>
+        <view class="chat-close" bindtap="closeChat" hover-class="chat-close-hover">
+          <text class="chat-close-x">×</text>
+        </view>
+      </view>
+      <scroll-view
+        class="chat-messages"
+        scroll-y
+        scroll-into-view="{{chatScrollIntoView}}"
+        scroll-with-animation
+        show-scrollbar="{{false}}"
+      >
+        <view
+          wx:for="{{chatMessages}}"
+          wx:key="id"
+          id="msg-{{item.id}}"
+          class="chat-row {{item.role === 'user' ? 'chat-row--user' : 'chat-row--chicken'}}"
+        >
+          <image
+            wx:if="{{item.role === 'chicken'}}"
+            class="chat-bubble-avatar"
+            src="{{currentChicken.avatar}}"
+            mode="aspectFill"
+          />
+          <view class="chat-bubble-wrap">
+            <text class="chat-bubble">{{item.text}}</text>
+          </view>
+        </view>
+        <view wx:if="{{chatSending}}" id="chat-loading-anchor" class="chat-row chat-row--chicken">
+          <image class="chat-bubble-avatar" src="{{currentChicken.avatar}}" mode="aspectFill" />
+          <view class="chat-bubble-wrap chat-bubble-wrap--loading">
+            <view class="chat-loading">
+              <view class="chat-loading-dot chat-loading-dot--1" />
+              <view class="chat-loading-dot chat-loading-dot--2" />
+              <view class="chat-loading-dot chat-loading-dot--3" />
+            </view>
+          </view>
+        </view>
+        <view class="chat-messages-pad" />
+      </scroll-view>
+      <view class="chat-input-bar">
+        <input
+          class="chat-input"
+          type="text"
+          value="{{chatInput}}"
+          placeholder="和它说点什么..."
+          placeholder-class="chat-input-ph"
+          confirm-type="send"
+          bindinput="onChatInput"
+          bindconfirm="sendChat"
+        />
+        <view class="chat-send {{chatSending ? 'chat-send--disabled' : ''}}" bindtap="sendChat" hover-class="chat-send-hover">
+          <text class="chat-send-txt">{{chatSending ? '发送中' : '发送'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="monitor-overlay" wx:if="{{monitorVisible}}">
+    <view class="monitor-mask" bindtap="closeMonitor" catchtouchmove="noop" />
+    <view class="monitor-panel" catchtouchmove="noop">
+      <view class="monitor-head">
+        <text class="monitor-title">{{monitorTitle}}</text>
+        <view class="monitor-close" bindtap="closeMonitor" hover-class="monitor-close-hover">
+          <text class="monitor-close-x">×</text>
+        </view>
+      </view>
+      <view class="monitor-video-wrap">
+        <view wx:if="{{monitorLoading}}" class="monitor-state">
+          <view class="monitor-loading-dot" />
+          <text>正在连接摄像头...</text>
+        </view>
+        <block wx:elif="{{monitorReady}}">
+          <ezplayer
+            id="adoptMonitorPlayer"
+            accessToken="{{monitorAccessToken}}"
+            url="{{monitorPlayUrl}}"
+            plugins="{{monitorPlayerPlugins}}"
+            theme="{{monitorPlayerTheme}}"
+            autoPlay="{{false}}"
+            muted="{{true}}"
+            enableScale="{{false}}"
+            ratio="16:9"
+            class="monitor-video"
+            style="width: 100%; height: 390rpx;"
+          />
+          <cover-view wx:if="{{!monitorStarted}}" class="monitor-play-center" catchtap="startMonitorPlay">
+            <cover-view class="monitor-play-btn">
+              <cover-view class="monitor-play-icon">▶</cover-view>
+            </cover-view>
+          </cover-view>
+        </block>
+        <view wx:else class="monitor-state">
+          <text>{{monitorErrorText || '暂无监控画面'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="gift-overlay" wx:if="{{giftVisible}}">
+    <view class="gift-mask" bindtap="closeGiftPanel" catchtouchmove="noop" />
+    <view class="gift-sheet {{giftDetailMode ? 'gift-sheet--detail' : ''}}" catchtouchmove="noop">
+      <view class="gift-sheet-grab" />
+      <view class="gift-sheet-head">
+        <view class="gift-sheet-title-wrap">
+          <text class="gift-sheet-title">{{giftDetailMode ? '物流详情' : giftPanelTitle}}</text>
+          <text class="gift-sheet-sub">{{giftDetailMode ? '查看本期赠送物的物流动态' : '每一期赠送都会在这里留下履约记录'}}</text>
+        </view>
+        <view class="gift-close" bindtap="closeGiftPanel" hover-class="gift-close-hover">
+          <text class="gift-close-x">×</text>
+        </view>
+      </view>
+
+      <block wx:if="{{!giftDetailMode}}">
+        <view wx:if="{{giftLoading}}" class="gift-state">
+          <view class="gift-loading-dot" />
+          <text>正在加载赠送记录...</text>
+        </view>
+        <scroll-view wx:elif="{{giftList.length}}" class="gift-list-scroll" scroll-y show-scrollbar="{{false}}">
+          <view
+            class="gift-order-card"
+            wx:for="{{giftList}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="openGiftDetail"
+            hover-class="gift-order-card-hover"
+          >
+            <view class="gift-order-top">
+              <view class="gift-order-main">
+                <text class="gift-order-title">第 {{item.periodIndex}} / {{item.periodTotal}} 期</text>
+                <text class="gift-order-sub">{{item.giftTitle}}</text>
+              </view>
+              <view class="gift-order-status gift-order-status--{{item.status}}">
+                <text class="gift-order-status-txt">{{item.statusText || '待发货'}}</text>
+              </view>
+            </view>
+            <view class="gift-order-info">
+              <text>计划 {{item.plannedDate || '--'}}</text>
+              <text>{{item.deliverySummary}}</text>
+            </view>
+            <text class="gift-order-latest" wx:if="{{item.expressLastContext}}">{{item.expressLastContext}}</text>
+            <view class="gift-order-foot">
+              <text>{{item.expressLastTime || '点击查看详情'}}</text>
+              <text class="gift-order-arrow">›</text>
+            </view>
+          </view>
+        </scroll-view>
+        <view wx:else class="gift-empty">
+          <text class="gift-empty-title">暂无赠送记录</text>
+        </view>
+      </block>
+
+      <block wx:else>
+        <view class="gift-detail-card" wx:if="{{giftSelected}}">
+          <view class="gift-detail-hero">
+            <view>
+              <text class="gift-detail-title">{{giftSelected.giftTitle}}</text>
+              <text class="gift-detail-sub">第 {{giftSelected.periodIndex}} / {{giftSelected.periodTotal}} 期 · {{giftSelected.statusText}}</text>
+            </view>
+            <view class="gift-order-status gift-order-status--{{giftSelected.status}}">
+              <text class="gift-order-status-txt">{{giftSelected.statusText || '待发货'}}</text>
+            </view>
+          </view>
+          <view class="gift-detail-grid">
+            <view class="gift-detail-cell">
+              <text class="gift-detail-label">计划日期</text>
+              <text class="gift-detail-value">{{giftSelected.plannedDate || '--'}}</text>
+            </view>
+            <view class="gift-detail-cell">
+              <text class="gift-detail-label">履约单号</text>
+              <text class="gift-detail-value mono">{{giftSelected.shipmentNo || '--'}}</text>
+            </view>
+            <view class="gift-detail-cell">
+              <text class="gift-detail-label">配送方式</text>
+              <text class="gift-detail-value">{{giftSelected.deliveryMethodText || '快递包邮'}}</text>
+            </view>
+            <view class="gift-detail-cell" wx:if="{{!giftSelected.isOfflineDelivery}}">
+              <text class="gift-detail-label">物流公司</text>
+              <text class="gift-detail-value">{{giftSelected.expressCompany || '待发货'}}</text>
+            </view>
+            <view class="gift-detail-cell" wx:if="{{!giftSelected.isOfflineDelivery}}">
+              <text class="gift-detail-label">物流单号</text>
+              <text class="gift-detail-value mono">{{giftSelected.expressNo || '--'}}</text>
+            </view>
+            <view class="gift-detail-cell gift-detail-cell--wide" wx:else>
+              <text class="gift-detail-label">配送说明</text>
+              <text class="gift-detail-value">线下配送，已完成签收</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="gift-track-card" wx:if="{{giftSelected}}">
+          <view class="gift-track-head">
+            <text class="gift-track-title">物流动态</text>
+            <text class="gift-track-tip">{{giftSelected.expressLastTime || '暂无更新时间'}}</text>
+          </view>
+          <scroll-view class="gift-track-scroll" scroll-y show-scrollbar="{{false}}">
+            <view wx:if="{{giftSelected && giftSelected.expressTracks && giftSelected.expressTracks.length}}" class="gift-track-list">
+              <view class="gift-track-node" wx:for="{{giftSelected.expressTracks}}" wx:key="index">
+                <view class="gift-track-dot" />
+                <view class="gift-track-body">
+                  <text class="gift-track-context">{{item.context}}</text>
+                  <text class="gift-track-time">{{item.time || '--'}}</text>
+                </view>
+              </view>
+            </view>
+            <view wx:else class="gift-track-empty">
+              <text>{{giftSelected.trackEmptyText}}</text>
+            </view>
+          </scroll-view>
+        </view>
+
+        <view class="gift-detail-actions" wx:if="{{giftSelected}}">
+          <view class="gift-back-btn" bindtap="backGiftList" hover-class="gift-back-btn-hover">
+            <text>返回赠送记录</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="poster-overlay" wx:if="{{posterVisible}}">
+    <view class="poster-mask" catchtouchmove="noop" />
+    <view class="poster-panel" catchtouchmove="noop">
+      <view class="poster-head">
+        <view>
+          <text class="poster-title">认养分享海报</text>
+        </view>
+        <view class="poster-close" bindtap="closePoster">
+          <text>×</text>
+        </view>
+      </view>
+      <image class="poster-preview" src="{{posterImagePath}}" mode="widthFix" bindtap="previewPosterImage" />
+    </view>
+  </view>
+
+  <view class="poster-canvas-holder" catchtouchmove="noop">
+    <canvas
+      type="2d"
+      id="adoptPosterCanvas"
+      canvas-id="adoptPosterCanvas"
+      class="poster-canvas"
+      style="width: 750px; height: 1125px;"
+    ></canvas>
+  </view>
+</view>

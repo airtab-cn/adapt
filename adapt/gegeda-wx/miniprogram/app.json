@@ -1,0 +1,82 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/search-result/search-result",
+    "pages/mall/mall",
+    "pages/adopt/adopt",
+    "pages/cart/cart",
+    "pages/mine/mine",
+    "pages/event/event",
+    "pages/event-detail/event-detail",
+    "pages/product-detail/product-detail",
+    "pages/coupon-center/coupon-center",
+    "pages/adopt-detail/adopt-detail",
+    "pages/adopt-agreement/adopt-agreement",
+    "pages/assets-detail/assets-detail",
+    "pages/adopt-order-submit/adopt-order-submit",
+    "pages/order-submit/order-submit",
+    "pages/order-list/order-list",
+    "pages/order-detail/order-detail",
+    "pages/product-review-list/product-review-list",
+    "pages/favorite-list/favorite-list",
+    "pages/coop/coop",
+    "pages/address-list/address-list",
+    "pages/address-edit/address-edit",
+    "pages/profile-edit/profile-edit",
+    "pages/reserve/reserve",
+    "pages/monitor/monitor",
+    "pages/monitor-player/monitor-player"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "认养一只鸡",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "tabBar": {
+    "color": "#7d7d7d",
+    "selectedColor": "#e8a244",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home_activate.png"
+      },
+      {
+        "pagePath": "pages/mall/mall",
+        "text": "商城",
+        "iconPath": "images/tabbar/shop.png",
+        "selectedIconPath": "images/tabbar/shop_activate.png"
+      },
+      {
+        "pagePath": "pages/adopt/adopt",
+        "text": "认养",
+        "iconPath": "images/tabbar/egg.png",
+        "selectedIconPath": "images/tabbar/egg_activate.png"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "text": "购物车",
+        "iconPath": "images/tabbar/cart.png",
+        "selectedIconPath": "images/tabbar/home_activate.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我",
+        "iconPath": "images/tabbar/me.png",
+        "selectedIconPath": "images/tabbar/home_activate.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents",
+  "plugins": {
+    "ezplayer": {
+      "version": "latest",
+      "provider": "wxf2b3a0262975d8c2"
+    }
+  }
+}

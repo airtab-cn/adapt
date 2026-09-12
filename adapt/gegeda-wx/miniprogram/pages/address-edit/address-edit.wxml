@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="card">
+    <view class="field-row">
+      <text class="field-label">收货人</text>
+      <input class="field-input" placeholder="请输入收货人姓名" value="{{name}}" bindinput="onNameInput" />
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">手机号</text>
+      <input class="field-input" type="number" maxlength="11" placeholder="请输入手机号" value="{{phone}}" bindinput="onPhoneInput" />
+    </view>
+
+    <view class="field-row">
+      <text class="field-label">所在地区</text>
+      <picker mode="region" value="{{regionParts}}" bindchange="onRegionChange" class="field-picker">
+        <view class="field-picker-inner">
+          <text class="field-picker-text {{region ? '' : 'field-picker-text--ph'}}">
+            {{region || '请选择省 / 市 / 区'}}
+          </text>
+          <text class="field-picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="field-row field-row--textarea">
+      <text class="field-label">详细地址</text>
+      <textarea
+        class="field-textarea"
+        maxlength="120"
+        placeholder="街道、门牌号、楼栋房间号等"
+        value="{{detail}}"
+        bindinput="onDetailInput"
+      />
+    </view>
+
+    <view class="field-row field-row--switch">
+      <text class="field-label">设为默认</text>
+      <switch color="#22c55e" checked="{{isDefault}}" bindchange="onDefaultChange" />
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="save-btn" bindtap="onSave" hover-class="save-btn-hover">保存地址</view>
+  </view>
+</view>

@@ -1,0 +1,46 @@
+<view class="page">
+  <view class="hero">
+    <text class="hero-title">{{bannerTitle}}</text>
+    <text class="hero-sub">{{bannerSub}}</text>
+  </view>
+
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">热门活动</text>
+      <text class="section-sub">持续更新</text>
+    </view>
+    <view
+      wx:for="{{activities}}"
+      wx:key="id"
+      class="act-card"
+      data-id="{{item.id}}"
+      bindtap="onActivityTap"
+      hover-class="act-card-hover"
+    >
+      <image class="act-cover" src="{{item.cover}}" mode="aspectFill" />
+      <view class="act-body">
+        <view class="act-top">
+          <text class="act-tag">{{item.tag}}</text>
+          <text class="act-status {{item.status === '进行中' ? 'act-status--on' : 'act-status--wait'}}">{{item.status}}</text>
+        </view>
+        <text class="act-title">{{item.title}}</text>
+        <text class="act-sub">{{item.subtitle}}</text>
+        <view class="act-foot">
+          <text class="act-date">{{item.date}}</text>
+          <text class="act-action">查看详情</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section section--rules">
+    <view class="section-head">
+      <text class="section-title">活动规则</text>
+      <text class="section-sub">RULES</text>
+    </view>
+    <view class="rule-row" wx:for="{{rules}}" wx:key="index">
+      <view class="rule-dot" />
+      <text class="rule-text">{{item}}</text>
+    </view>
+  </view>
+</view>
