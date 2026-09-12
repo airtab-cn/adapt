@@ -17,9 +17,9 @@
     <th>认养档案与方案</th>
   </tr>
   <tr>
-    <td><img src="gegeda-wx/images/IMG_3912.PNG" width="240" alt="小程序首页，展示轮播图、公告和农场服务入口"></td>
-    <td><img src="gegeda-wx/images/IMG_3917.PNG" width="240" alt="商品商城，展示分类、搜索和商品列表"></td>
-    <td><img src="gegeda-wx/images/IMG_3918.PNG" width="240" alt="认养页面，展示未认养状态的档案、周期和认养方案"></td>
+    <td><img src="adapt/gegeda-wx/images/IMG_3912.PNG" width="240" alt="小程序首页，展示轮播图、公告和农场服务入口"></td>
+    <td><img src="adapt/gegeda-wx/images/IMG_3917.PNG" width="240" alt="商品商城，展示分类、搜索和商品列表"></td>
+    <td><img src="adapt/gegeda-wx/images/IMG_3918.PNG" width="240" alt="认养页面，展示未认养状态的档案、周期和认养方案"></td>
   </tr>
   <tr>
     <th>商品详情</th>
@@ -27,9 +27,9 @@
     <th>个人中心</th>
   </tr>
   <tr>
-    <td><img src="gegeda-wx/images/IMG_3926.PNG" width="240" alt="商品详情，展示商品图片、价格、规格、优惠券和购买入口"></td>
-    <td><img src="gegeda-wx/images/IMG_3930.PNG" width="240" alt="认养方案详情，展示认养周期、赠品和服务内容"></td>
-    <td><img src="gegeda-wx/images/IMG_3921.PNG" width="240" alt="个人中心，展示个人资料、资产、订单状态和常用服务"></td>
+    <td><img src="adapt/gegeda-wx/images/IMG_3926.PNG" width="240" alt="商品详情，展示商品图片、价格、规格、优惠券和购买入口"></td>
+    <td><img src="adapt/gegeda-wx/images/IMG_3930.PNG" width="240" alt="认养方案详情，展示认养周期、赠品和服务内容"></td>
+    <td><img src="adapt/gegeda-wx/images/IMG_3921.PNG" width="240" alt="个人中心，展示个人资料、资产、订单状态和常用服务"></td>
   </tr>
 </table>
 
@@ -43,9 +43,9 @@
       <th>监控中心</th>
     </tr>
     <tr>
-      <td><img src="gegeda-wx/images/IMG_3927.PNG" width="240" alt="商品规格弹层，展示规格、配送方式和购买数量选择"></td>
-      <td><img src="gegeda-wx/images/IMG_3925.PNG" width="240" alt="农场预约页面，展示预约表单和预约记录区域"></td>
-      <td><img src="gegeda-wx/images/IMG_3923.PNG" width="240" alt="农场监控中心，展示尚未配置监控区域和摄像头时的空状态"></td>
+      <td><img src="adapt/gegeda-wx/images/IMG_3927.PNG" width="240" alt="商品规格弹层，展示规格、配送方式和购买数量选择"></td>
+      <td><img src="adapt/gegeda-wx/images/IMG_3925.PNG" width="240" alt="农场预约页面，展示预约表单和预约记录区域"></td>
+      <td><img src="adapt/gegeda-wx/images/IMG_3923.PNG" width="240" alt="农场监控中心，展示尚未配置监控区域和摄像头时的空状态"></td>
     </tr>
   </table>
 
@@ -100,7 +100,7 @@
 | 全局配置 | `style: v2`、`componentFramework: glass-easel`、按需注入组件 |
 
 ```text
-gegeda-wx/
+adapt/gegeda-wx/
 ├── images/                     # README 使用的小程序截图
 ├── miniprogram/                # 小程序源码根目录
 │   ├── app.ts                  # 应用初始化、播放器插件初始化
@@ -122,7 +122,7 @@ gegeda-wx/
 
 ### 页面索引
 
-页面注册以 [miniprogram/app.json](gegeda-wx/miniprogram/app.json) 为准。当前包含 26 个页面，其中首页、商城、认养、购物车和「我」为底部 TabBar 页面。
+页面注册以 [miniprogram/app.json](adapt/gegeda-wx/miniprogram/app.json) 为准。当前包含 26 个页面，其中首页、商城、认养、购物车和「我」为底部 TabBar 页面。
 
 下表路径均相对于 `miniprogram/pages/`。
 
@@ -171,7 +171,7 @@ npm install
 
 ### 4. 设置后端地址
 
-修改 [miniprogram/utils/api.ts](gegeda-wx/miniprogram/utils/api.ts) 顶部的 `USER_BASE_URL`。当前值为局域网调试地址 `http://192.168.3.37:8000/user/`，需要替换为自己的服务地址，例如：
+修改 [miniprogram/utils/api.ts](adapt/gegeda-wx/miniprogram/utils/api.ts) 顶部的 `USER_BASE_URL`。当前值为局域网调试地址 `http://192.168.3.37:8000/user/`，需要替换为自己的服务地址，例如：
 
 ```ts
 export const USER_BASE_URL = 'https://api.example.com/user/'
@@ -210,7 +210,7 @@ export const USER_BASE_URL = 'https://api.example.com/user/'
 
 ### 请求与登录约定
 
-接口封装集中在 [miniprogram/utils/api.ts](gegeda-wx/miniprogram/utils/api.ts)。前端使用 `GET`／`POST` 请求，上传使用 `wx.uploadFile`；接口名保留尾部 `/`。
+接口封装集中在 [miniprogram/utils/api.ts](adapt/gegeda-wx/miniprogram/utils/api.ts)。前端使用 `GET`／`POST` 请求，上传使用 `wx.uploadFile`；接口名保留尾部 `/`。
 
 - **响应处理**：请求层接收 HTTP `2xx` 响应，业务层通常以响应体中的 `code === 200` 判断成功，以 `msg` 展示提示。
 - **登录流程**：`wx.login` → `wxLogin/` → 缓存顶层 `token` → 后续需要鉴权的请求携带 `Authorization: Bearer <token>`。

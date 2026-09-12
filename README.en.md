@@ -58,7 +58,7 @@ Global configuration includes `style: v2`, the `glass-easel` component framework
 | `project.config.json` | Shared DevTools configuration |
 | `project.private.config.json` | Local settings that can override shared configuration |
 
-[app.json](gegeda-wx/miniprogram/app.json) registers 26 pages. Home, storefront, adoption, cart and account are the five bottom tabs. A complete [page index](README.md#页面索引) is available in the Chinese README.
+[app.json](adapt/gegeda-wx/miniprogram/app.json) registers 26 pages. Home, storefront, adoption, cart and account are the five bottom tabs. A complete [page index](README.md#页面索引) is available in the Chinese README.
 
 ## Getting started
 
@@ -89,7 +89,7 @@ The committed AppID belongs to the original project configuration. Use your own 
 
 ### 3. Configure the backend
 
-Edit `USER_BASE_URL` at the top of [miniprogram/utils/api.ts](gegeda-wx/miniprogram/utils/api.ts). Its current value, `http://192.168.3.37:8000/user/`, is a local-network development address. Replace it with your own service, for example:
+Edit `USER_BASE_URL` at the top of [miniprogram/utils/api.ts](adapt/gegeda-wx/miniprogram/utils/api.ts). Its current value, `http://192.168.3.37:8000/user/`, is a local-network development address. Replace it with your own service, for example:
 
 ```ts
 export const USER_BASE_URL = 'https://api.example.com/user/'
@@ -120,7 +120,7 @@ Validate product loading first, followed by login and addresses, checkout and or
 
 ## Backend integration
 
-All request functions and business types are defined in [api.ts](gegeda-wx/miniprogram/utils/api.ts). API paths use trailing slashes, regular requests use `GET` or `POST`, and files use `wx.uploadFile`.
+All request functions and business types are defined in [api.ts](adapt/gegeda-wx/miniprogram/utils/api.ts). API paths use trailing slashes, regular requests use `GET` or `POST`, and files use `wx.uploadFile`.
 
 - The request layer accepts HTTP `2xx`; business logic generally checks `code === 200` and uses `msg` for feedback.
 - Login expects a top-level `token`. Protected requests use `Authorization: Bearer <token>`.
